@@ -6,7 +6,7 @@
     else if (isset($action)) {
       switch ($action) {
 
-        case "recherche":
+        case "search":
                 $vue="recherche";
                 $pagetitle="Recherche";
                 break;
