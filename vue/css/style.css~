@@ -76,3 +76,7 @@ code {
         padding: 6px 0;
     }
 }
+
+section { 
+  padding-right: 0 !important; 
+}
