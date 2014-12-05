@@ -1,15 +1,17 @@
 DROP TABLE IF EXISTS Achat;
 DROP TABLE IF EXISTS Utilisateur;
 DROP TABLE IF EXISTS Vaisseau;
+DROP TABLE IF EXISTS Administrateur;
 
 CREATE TABLE Vaisseau
 (
-	idVaisseaux INT NOT NULL AUTO_INCREMENT,
-    nomVaiseaux VARCHAR(30) NOT NULL,
-    prixVaisseaux VARCHAR(10) NOT NULL, /* on a INT,INT */
-    nbrEnStock INT() NOT NULL, /* on a INT,INT */
-	PRIMARY KEY (idVaisseaux)
-);
+	idVaisseau INT NOT NULL AUTO_INCREMENT,
+    nomVaisseau VARCHAR(30) NOT NULL,
+    prixVaisseau VARCHAR(10) NOT NULL, /* on a INT,INT */
+    nbrEnStock INT NOT NULL, /* on a INT,INT */
+	descripVaisseau VARCHAR(1000) NOT NULL,
+	PRIMARY KEY (idVaisseau)
+)ENGINE=INNODB;
 
 CREATE TABLE Utilisateur
 (
@@ -17,95 +19,43 @@ CREATE TABLE Utilisateur
     pseudo VARCHAR(20) NOT NULL,
     sexe CHAR(1) NOT NULL, /* H ou F */
     age INT UNSIGNED NOT NULL, /* pas de signe donc toujours positif */
+	adr VARCHAR(255) NOT NULL,
 	pwd VARCHAR(255) NOT NULL,
 	email VARCHAR(255) NOT NULL,
+	numtel INT,
+	nbrVaisseauAcheter INT NOT NULL,
 	PRIMARY KEY (idUtilisateur)
-);
+)ENGINE=INNODB;
 
 CREATE TABLE Achat
-		
-);
-
-CREATE TABLE pfcls_Parties
 (
-	idPartie INT NOT NULL AUTO_INCREMENT,
-    nbManche INT UNSIGNED NOT NULL, /* pas de signe donc toujours positif */
-    idJoueur1 INT NOT NULL, /* pas de signe donc toujours positif */
-    idJoueur2 INT NOT NULL, /* pas de signe donc toujours positif */
-	listeManches VARCHAR(255), /* de la forme idCoup1,idCoup2,idCoup3,etc. */
-	idJoueurGagnant INT, /* pas de signe donc toujours positif */
-	PRIMARY KEY (idPartie),
-	FOREIGN KEY (idJoueur1) REFERENCES pfcls_Joueurs(idJoueur)
-	ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (idJoueur2) REFERENCES pfcls_Joueurs(idJoueur)
-	ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (idJoueurGagnant) REFERENCES pfcls_Joueurs(idJoueur)
-	ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=INNODB;
+	idAchat INT NOT NULL AUTO_INCREMENT,
+	idAcheteur INT NOT NULL,
+	idVaisseau INT NOT NULL,
+	PRIMARY KEY (idAchat)
+)ENGINE=INNODB;
 
-CREATE TABLE pfcls_Manches
+CREATE TABLE Administrateur
 (
-	idManche INT NOT NULL AUTO_INCREMENT,
-	idPartie INT NOT NULL,
-    listeCoups VARCHAR(255), /* de la forme idFigure1,idFigure2,idFigure3,etc. */
-	idJoueurGagnant INT, /* pas de signe donc toujours positif */
-	PRIMARY KEY (idManche),
-	FOREIGN KEY (idJoueurGagnant) REFERENCES pfcls_Joueurs(idJoueur)
-	ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (idPartie) REFERENCES pfcls_Parties(idPartie)
-	ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = INNODB;
+	idAdministrateur INT NOT NULL AUTO_INCREMENT,
+    pseudo VARCHAR(20) NOT NULL,
+	pwd VARCHAR(255) NOT NULL,
+	email VARCHAR(255) NOT NULL,
+	PRIMARY KEY (idAdministrateur)
+)ENGINE=INNODB;
 
-CREATE TABLE pfcls_Coups
-(
-	idCoup INT NOT NULL AUTO_INCREMENT,
-	idManche INT NOT NULL,
-    idFigure1 INT,
-    idFigure2 INT,
-    idJoueur1 INT NOT NULL,
-    idJoueur2 INT NOT NULL,
-	idJoueurGagnant INT, /* pas de signe donc toujours positif */
-	PRIMARY KEY (idCoup),
-	FOREIGN KEY (idManche) REFERENCES pfcls_Manches(idManche)
-	ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (idFigure1) REFERENCES pfcls_Figures(idFigure)
-	ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (idFigure2) REFERENCES pfcls_Figures(idFigure)
-	ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (idJoueur1) REFERENCES pfcls_Joueurs(idJoueur)
-	ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (idJoueur2) REFERENCES pfcls_Joueurs(idJoueur)
-	ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (idJoueurGagnant) REFERENCES pfcls_Joueurs(idJoueur)
-	ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = INNODB;
 
-CREATE TABLE pfcls_StatistiquesPersonnelles
-(
-	idStatsPerso INT NOT NULL AUTO_INCREMENT,
-    idJoueur INT NOT NULL,
-	listeCoups VARCHAR(255), /* de la forme idFigure1,idFigure2,idFigure3,etc. */
-	PRIMARY KEY (idStatsPerso),
-	FOREIGN KEY (idJoueur) REFERENCES pfcls_Joueurs(idJoueur)
-	ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = INNODB;
+INSERT INTO Vaisseau (idVaisseau,nomVaisseau, prixVaisseau, nbrEnStock, descripVaisseau) VALUES ("","A-Wing", "250000", "100", "Le A-wing est le chasseur le plus rapide de 
+l'Alliance Rebelle. Le vaisseau, très léger, est aussi très maniable et donc particulièrement utile lors de raids éclairs pour surprendre les forces impériales. 
+La contrepartie à cette vitesse et à cette maniabilité est un bouclier déflecteur peu puissant . Il possède cependant une bonne puissance de feu et un système de brouillage pour gêner les communications ennemies.");
 
-CREATE TABLE pfcls_StatistiquesGlobales
-(
-	idStatsGlob INT NOT NULL AUTO_INCREMENT,
-    idJoueur1 INT NOT NULL,
-    idJoueur2 INT NOT NULL,
-	listeCoups VARCHAR(255), /* de la forme (idFigure1,idFigure2)(idFigure3,idFigure4),etc. */
-	PRIMARY KEY (idStatsGlob),
-	FOREIGN KEY (idJoueur1) REFERENCES pfcls_Joueurs(idJoueur)
-	ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (idJoueur2) REFERENCES pfcls_Joueurs(idJoueur)
-	ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = INNODB;
+INSERT INTO Vaisseau (idVaisseau,nomVaisseau, prixVaisseau, nbrEnStock, descripVaisseau) VALUES ("","Shangai", "1000000", "56", "L’action la plus importante du SSV Shangai durant la guerre contre les Moissonneurs fut l’évacuation de la colonie d’Uqbar. Les renseignements de l’Alliance avaient signalé que des Moissonneurs se dirigeaient vers Uqbar, mais le croiseur Shangai était incapable de se poser sur ce monde à la gravité modérée. 
+Le commandant du Shangai envoya rapidement toutes es navettes pour participer au rapatriement de centaines de colons sur son vaisseau. Réalisant plus de 41 trajets en une heure, le Shangai parvint à évacuer tout ce qui restait de la population. Quand les Moissonneurs arrivèrent, la capitale d’Uqbar était vide, comme si elle n’avait jamais été occupée.");
 
-INSERT INTO pfcls_Figures (nom, forces, faiblesses) VALUES ("Pierre", "3,4", "2,5");
-INSERT INTO pfcls_Figures (nom, forces, faiblesses) VALUES ("Feuille", "1,5", "3,4");
-INSERT INTO pfcls_Figures (nom, forces, faiblesses) VALUES ("Ciseaux", "2,4", "5,1");
-INSERT INTO pfcls_Figures (nom, forces, faiblesses) VALUES ("Lézard", "2,5", "3,1");
-INSERT INTO pfcls_Figures (nom, forces, faiblesses) VALUES ("Spock", "1,3", "2,4");
-INSERT INTO pfcls_Joueurs (idJoueur, pseudo, sexe, age, nbV, nbD, pwd, email) VALUES (0, "I.A.", "N", 0, 0, 0, "", "ia@pfcls.me");
+INSERT INTO Vaisseau (idVaisseau,nomVaisseau, prixVaisseau, nbrEnStock, descripVaisseau) VALUES ("","Galactica", "10000000", "20", "Battlestar de classe Columbia, il porte le numéro de registre BS-75, c'est le plus ancien de ce type encore existant, il date de la première Guerre contre les Cylons. Il est l'un des seuls Battlestar ayant échappé à la destruction des Douze Colonies de Kobol. Commandé par l'Amiral William Adama.");
+
+INSERT INTO Vaisseau (idVaisseau,nomVaisseau, prixVaisseau, nbrEnStock, descripVaisseau) VALUES ("","Cargo 125s2", "500000", "107", "Vaisseau cargo Turien.");
+
+INSERT INTO Vaisseau (idVaisseau,nomVaisseau, prixVaisseau, nbrEnStock, descripVaisseau) VALUES ("","Enterprise NCC-1701", "10000000", "20", "L'Enterprise est construit essentiellement pour l'exploration spatiale bien qu'il soit bien armé, la classe Constitution dont il fait partie étant la plus puissante de Starfleet lors de sa mise en service. Il compte 23 ponts et 14 laboratoires scientifiques. Il possède aussi un hangar logeant deux navettes et qui est situé à l'arrière de 
+la section de propulsion. L'Enterprise possède aussi un téléporteur capable de dématérialiser et de rematérialiser des objets et des personnes d'un vaisseau à un autre ou d'un vaisseau à une planète");
+
