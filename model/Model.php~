@@ -1,7 +1,7 @@
 <?php
 
 require_once ROOT . DS . 'config' . DS . 'Config.php';
-class Model {
+class Modele {
 
     public static $pdo;
 
@@ -25,6 +25,6 @@ class Model {
         }
     }
 }
-Model::set_static();
+Modele::set_static();
 
 ?>

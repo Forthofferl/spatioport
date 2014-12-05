@@ -24,8 +24,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li <?php if (isset($vue)) if (($page=="index" && $vue=="Vaisseaux")) echo 'class="active"'; ?>><a href="index.php?action=Vaisseau">Vaisseau</a></li>
-                    <li <?php if (isset($vue)) if ($page=="index" && $vue=="Recherche") echo 'class="active"'; ?>><a href="index.php?action=rechercher">Rechercher</a></li>
+                    <li <?php if (isset($vue)) if (($page=="index" && $vue=="choixMode") || $page=="jeu" || $page=="jeuIA") echo 'class="active"'; ?>><a href="index.php?action=choixmode">Jouer !</a></li>
+                    <li <?php if (isset($vue)) if ($page=="index" && $vue=="regles") echo 'class="active"'; ?>><a href="index.php?action=regles">Règles du jeu</a></li>
                     <?php if(estConnecte()) include_once VIEW_PATH.'menu'.DS.'vueMenuConnecte.php';
                     else include_once  VIEW_PATH.'menu'.DS.'vueMenuNonConnecte.php';
                     ?>
@@ -44,7 +44,7 @@
                 <div class="jumbotron">
                 <?php if(!isset($vue)) {
                     echo "<h2>$messageErreur</h2>";
-                    echo '<img class="img-responsive center-block" src="'.VIEW_PATH_BASE.'alt="Vous avez rencontré une erreur!">';
+                    echo '<img class="img-responsive center-block" src="'.VIEW_PATH_BASE.'img/glitch.png" alt="Heeee ?!">';
                   }
                   else require VIEW_PATH.$page.DS.'vue'.ucfirst($vue).ucfirst($page).'.php';?>
                 </div>
@@ -58,7 +58,7 @@
         </div>
         <div id="footer">
             <div class="container">
-                <p class="credit">Copyright © 2014 -</p>
+                <p class="credit">Copyright © 2014 - <a href="index.php?action=apropos">À propos</a></p>
             </div>
         </div>
         <!-- JS placé à la fin pour un chargement plus rapide -->
