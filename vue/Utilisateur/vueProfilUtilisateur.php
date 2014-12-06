@@ -1,4 +1,4 @@
-<h1 id="mainhead">Votre panier</h1>
+<h1 id="mainhead">Votre profil</h1>
 <hr>
 <p>
 <?php
