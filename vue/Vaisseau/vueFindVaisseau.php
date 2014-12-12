@@ -1,6 +1,6 @@
 <h1 id="mainhead">Rechercher un Vaisseau</h1>
 <hr>
-<form method="post" action="Utilisateur.php?action=searched">
+<form method="post" action="vaisseau.php?action=searched">
     <fieldset>
         <p>
             <input type="text" id="id_pseudo" class="form-control" name="nomVaisseau" placeholder="Nom de vaisseau" required/><br/>

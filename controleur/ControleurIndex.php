@@ -6,7 +6,7 @@
     else if (isset($action)) {
       switch ($action) {
 
-        case "search":
+        case "rechercher":
                 $vue="recherche";
                 $pagetitle="Recherche";
                 break;
@@ -17,13 +17,21 @@
                 $pagetitle="Connexion";
                 break;
         break;
+        
+        case "Vaisseau":
+			$vue="connect";
+			$pagetitle="Connexion";
+			break;
+		break;
+		
+		
 /*
         case "inscrire":
             $vue="inscrit";
             $pagetitle="Inscription";
             break;
           
-	
+
 	case "panier"
           $vue="panier";
 	  $pagetitle="Votre Panier"

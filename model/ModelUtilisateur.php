@@ -4,8 +4,8 @@
  * Classe Utilisateur
  */
 
-require_once 'Modele.php';
-require_once 'Vaisseau.php';
+require_once 'Model.php';
+require_once 'ModelVaisseau.php';
 
 class Utilisateur extends Model {
 

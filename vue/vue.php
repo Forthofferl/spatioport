@@ -41,12 +41,12 @@
             <div class="col-md-1"></div>
             <div class="col-md-12">
               <div class="container">
-                <div class="jumbotron">
-                <?php if(!isset($vue)) {
+                <div class="jumbotron">	
+				 <?php if(!isset($vue)) {
                     echo "<h2>$messageErreur</h2>";
                     echo '<img class="img-responsive center-block" src="'.VIEW_PATH_BASE.'alt="Vous avez rencontré une erreur!">';
                   }
-                  else require VIEW_PATH.$page.DS.'vue'.ucfirst($vue).ucfirst($page).'.php';?>
+                  else require VIEW_PATH.$page.DS.'vue'.ucfirst($vue).ucfirst($page).'.php';?>     
                 </div>
               </div>
             </div>

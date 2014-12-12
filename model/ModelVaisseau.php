@@ -5,6 +5,7 @@
  */
 
 require_once 'Model.php';
+require_once 'ModelUtilisateur.php';
 
 class Vaisseau extends Model {
 
