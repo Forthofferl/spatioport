@@ -95,26 +95,7 @@ class Utilisateur extends Model {
         }
     }
 
-    public static function deleteProfil() {
-        try {
-            $req = self::$pdo->prepare('DELETE FROM Utilisateur WHERE idUtilisateur ='.$_SESSION['idUtilisateur']);
-            $req->execute();
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-            $messageErreur="Erreur lors de la suppression d'un utilisateur de la base de données";
-        }
-    }
-
-    public static function getProfil() {
-        try {
-            $req = self::$pdo->prepare('SELECT * FROM Utilisateur WHERE idUtilisateur ='.$_SESSION['idUtilisateur']);
-            $req->execute();
-            return $req->fetch(PDO::FETCH_OBJ);
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-            $messageErreur="Erreur lors de la recherche d'un utilisateur dans la base de données";
-        }
-    }
+   
 
     public static function getPseudo($idJ) {
         try {

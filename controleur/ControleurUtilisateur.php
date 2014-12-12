@@ -131,15 +131,14 @@ require_once MODEL_PATH."Utilisateur.php";
 
         case "profil":
             if(estConnecte()){
-                $joueur = Utilisateur::getProfil();
+				$data = array("idUtilisateur" => $_GET['idUtilisateur']);
+                $joueur = Utilisateur::read($data);
                 $p = $joueur->pseudo;
                 $a = $joueur->age;
                 $s = $joueur->sexe;
                 $e = $joueur->email;
-                $nbv = $joueur->nbV;
-                $nbd = $joueur->nbD;
-                $r = 0;
-                if($nbd!=0) $r = $nbv/$nbd;
+				$n = $joueur->numtel;
+				$nba = $joueur->nbrVaisseauAcheter;
                 $vue="profil";
                 $pagetitle="Votre profil";
             }

@@ -1,42 +1,22 @@
 <?php
 
-<<<<<<< HEAD
-require_once ROOT . DS . 'config' . DS . 'Config.php';
-=======
 // On va chercher le fichier de configuration dans "./config/Conf.php"
 require_once ROOT . DS . 'config' . DS . 'Conf.php';
 
->>>>>>> 1314187d1212d86d5a94a02872883c77af558776
 class Model {
 
     public static $pdo;
 
     public static function set_static() {
-<<<<<<< HEAD
-        $host = Config::getHostname();
-        $dbname = Config::getDatabase();
-        $login = Config::getLogin();
-        $pass = Config::getPassword();
-
-        try {
-            self::$pdo = new PDO("mysql:host=$host;dbname=$dbname", $login, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-            self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $ex) {
-            if (Config::getDebug()) {
-                echo $ex->getMessage();
-                die ("ProblÃ¨me lors de la connexion Ã  la base de donnÃ©es");
-            } else {
-                echo "Une erreur est survenue.";
-=======
         $host = Conf::getHostname();
         $dbname = Conf::getDatabase();
         $login = Conf::getLogin();
         $pass = Conf::getPassword();
 
         try {
-            // Connexion à la base de données            
-            // Le dernier argument sert à ce que toutes les chaines de charactères 
-            // en entrée et sortie de MySql soit dans le codage UTF-8
+            // Connexion Ã  la base de donnÃ©es            
+            // Le dernier argument sert Ã  ce que toutes les chaines de charactÃ¨res 
+            // en entrÃ©e et sortie de MySql soit dans le codage UTF-8
             self::$pdo = new PDO("mysql:host=$host;dbname=$dbname", $login, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
             // On active le mode d'affichage des erreurs, et le lancement d'exception en cas d'erreur
@@ -44,25 +24,19 @@ class Model {
         } catch (PDOException $ex) {
             if (Conf::getDebug()) {
                 echo $ex->getMessage();
-                die('Problème lors de la connexion à la base de donnée');
+                die('ProblÃ¨me lors de la connexion Ã  la base de donnÃ©e');
             } else {
                 echo 'Une erreur est survenue. <a href=""> Retour a la page d\'accueil </a>';
->>>>>>> 1314187d1212d86d5a94a02872883c77af558776
             }
             die();
         }
     }
-<<<<<<< HEAD
-}
-Model::set_static();
-
-=======
 
     public static function selectAll() {
         try {
             $sql = "SELECT * FROM " . static::$table;
             $req = self::$pdo->query($sql);
-            // fetchAll retoure un tableau d'objets représentant toutes les lignes du jeu d'enregistrements 
+            // fetchAll retoure un tableau d'objets reprÃ©sentant toutes les lignes du jeu d'enregistrements 
             return $req->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
             echo $e->getMessage();
@@ -143,7 +117,7 @@ Model::set_static();
             return $req->execute($data);
         } catch (PDOException $e) {
             echo $e->getMessage();
-            die("Erreur lors de la mise à jour dans la BDD " . static::$table);
+            die("Erreur lors de la mise Ã  jour dans la BDD " . static::$table);
         }
     }
 
@@ -151,5 +125,5 @@ Model::set_static();
 
 // On initialise la connexion $pdo un fois pour toute
 Model::set_static();
->>>>>>> 1314187d1212d86d5a94a02872883c77af558776
+
 ?>
