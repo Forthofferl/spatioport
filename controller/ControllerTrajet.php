@@ -7,13 +7,13 @@ require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';
 
 switch ($action) {
     case "read":
-        if (!isset($_GET['id'])) {
+        if (!is_null(myGet('id'))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
         // Initialisation des variables pour la vue        
-        $data = array("id" => $_GET['id']);
+        $data = array("id" => myGet('id'));
         $t = ModelTrajet::select($data);
         // Chargement de la vue
         if (is_null($t)) {
@@ -27,15 +27,15 @@ switch ($action) {
 
     case "readAllUtilisateurs":
         require_once MODEL_PATH . 'ModelUtilisateur.php';
-        if (!isset($_GET['id'])) {
+        if (!is_null(myGet('id'))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
         // Initialisation des variables pour la vue        
-        $data = array("id" => $_GET['id']);
+        $data = array("id" => myGet('id'));
         $tab_util = ModelTrajet::findUtilisateurs($data);
-        $id = $_GET['id'];
+        $id = myGet('id');
         $t = ModelTrajet::select($data);
         $data2 = array ("login" => $t->conducteur);
         $u = ModelUtilisateur::select($data2);
@@ -45,13 +45,13 @@ switch ($action) {
         
     case "deleteUtilisateur":
         require_once MODEL_PATH . 'ModelUtilisateur.php';
-        if (!(isset($_GET['id']) && isset($_GET['login']))) {
+        if (!(is_null(myGet('id')) || is_null(myGet('login')))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
-        $id = $_GET['id'];
-        $login = $_GET['login'];        
+        $id = myGet('id');
+        $login = myGet('login');        
         $data = array("id" => $id, "login" => $login);
         ModelTrajet::deletePassager($data);
         
@@ -65,12 +65,12 @@ switch ($action) {
         break;
         
     case "update":
-        if (!isset($_GET['id'])) {
+        if (!is_null(myGet('id'))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
-        $data = array("id" => $_GET['id']);
+        $data = array("id" => myGet('id'));
         $t = ModelTrajet::select($data);
         // Initialisation des variables pour la vue        
         $i = $t->id;
@@ -102,18 +102,18 @@ switch ($action) {
         break;
 
     case "save":
-        if (!(isset($_GET['conducteur']) && isset($_GET['depart']) && isset($_GET['arrivee']) 
-                && isset($_GET['prix']) && isset($_GET['nbplaces']))) {
+        if (!(is_null(myGet('conducteur')) || is_null(myGet('depart')) || is_null(myGet('arrivee')) 
+                || is_null(myGet('prix')) || is_null(myGet('nbplaces')))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
         $data = array(
-            "conducteur" => $_GET["conducteur"],
-            "depart" => $_GET["depart"],
-            "arrivee" => $_GET["arrivee"],
-            "prix" => $_GET["prix"],
-            "nbplaces" => $_GET["nbplaces"]
+            "conducteur" => myGet("conducteur"),
+            "depart" => myGet("depart"),
+            "arrivee" => myGet("arrivee"),
+            "prix" => myGet("prix"),
+            "nbplaces" => myGet("nbplaces")
         );
         $i = ModelTrajet::insertAndGetId($data);
         // Initialisation des variables pour la vue
@@ -124,23 +124,23 @@ switch ($action) {
         break;
 
     case "updated":
-        if (!(isset($_GET['conducteur']) && isset($_GET['depart']) && isset($_GET['arrivee']) 
-                && isset($_GET['prix']) && isset($_GET['nbplaces']))) {
+        if (is_null(myGet('conducteur')) || is_null(myGet('depart')) || is_null(myGet('arrivee')) 
+                || is_null(myGet('prix')) || is_null(myGet('nbplaces'))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
         $data = array(
-            "id" => $_GET["id"],
-            "conducteur" => $_GET["conducteur"],
-            "depart" => $_GET["depart"],
-            "arrivee" => $_GET["arrivee"],
-            "prix" => $_GET["prix"],
-            "nbplaces" => $_GET["nbplaces"]
+            "id" => myGet("id"),
+            "conducteur" => myGet("conducteur"),
+            "depart" => myGet("depart"),
+            "arrivee" => myGet("arrivee"),
+            "prix" => myGet("prix"),
+            "nbplaces" => myGet("nbplaces")
         );
         ModelTrajet::update($data);
         // Initialisation des variables pour la vue
-        $i = $_GET['id'];
+        $i = myGet('id');
         $tab_trajets = ModelTrajet::selectAll();
         // Chargement de la vue
         $view = "updated";
@@ -148,15 +148,15 @@ switch ($action) {
         break;
 
     case "delete":
-        if (!isset($_GET['id'])) {
+        if (!is_null(myGet('id'))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
-        $data = array("id" => $_GET['id']);
+        $data = array("id" => myGet('id'));
         $t = ModelTrajet::delete($data);
         // Initialisation des variables pour la vue
-        $i = $_GET['id'];
+        $i = myGet('id');
         $tab_trajets = ModelTrajet::selectAll();
         // Chargement de la vue
         $view = "deleted";

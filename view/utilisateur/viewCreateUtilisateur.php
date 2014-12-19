@@ -1,6 +1,6 @@
 <?php
 echo <<< EOT
-        <form method="get" action=".">
+        <form method="post" action=".">
             <fieldset>
                 <legend>$label un utilisateur</legend>
                 <p>
@@ -18,6 +18,14 @@ echo <<< EOT
                 <p>
                     <label for="id_email">Email</label> :
                     <input type="text" value="$e" name="email" id="id_email" required/>
+                </p>
+                <p>
+                    <label for="id_mdpl">Mot de passe</label> :
+                    <input type="password" value="$m1" name="mdp" id="id_mdp" required/>
+                </p>
+                <p>
+                    <label for="id_mdp2">Mot de passe</label> :
+                    <input type="password" value="$m2" name="mdp2" id="id_mdp2" required/>
                 </p>
                 <input type="hidden" name="action" value="$act" />
                 <input type="hidden" name="controller" value="utilisateur" />                

@@ -30,6 +30,12 @@ class Conf {
     static public function getDebug() {
         return self::$debug;
     }
+    
+    private static$seed ='Un anneau pour les gouverner tous et dans les tenebres les lier';
+        static public function getSeed() {
+        return self::$seed;
+    
+    }
 
 }
 

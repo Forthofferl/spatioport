@@ -1,14 +1,22 @@
 <?php
 
+function myGet($nomvar){
+    if (isset($_GET[$nomvar]))
+        return ($_GET[$nomvar]);
+    if (isset($_POST[$nomvar]))
+        return ($_POST[$nomvar]);
+    return null;
+}
+
 define('MODEL_PATH', ROOT . DS . 'model' . DS);
 
-if (isset($_GET['controller']))
-    $controller = $_GET['controller']; //recupere le controlleur passe dans l'url
+if (!is_null(myGet('controller')))
+    $controller = myGet('controller'); //recupere le controlleur passe dans l'url
 else
     $controller = "utilisateur";
 
-if (isset($_GET['action']))
-    $action = $_GET['action'];    //recupere l'action  passee dans l'url
+if (!is_null(myGet('action')))
+    $action = myGet('action');    //recupere l'action  passee dans l'url
 else
     $action = "readAll";
 
@@ -23,4 +31,7 @@ switch ($controller) {
 
     default:
 }
+
+
+    
 ?>

@@ -7,13 +7,13 @@ require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';
 
 switch ($action) {
     case "read":
-        if (!isset($_GET['login'])) {
+        if (!is_null(myGet('login'))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
         // Initialisation des variables pour la vue        
-        $data = array("login" => $_GET['login']);
+        $data = array("login" => myGet('login'));
         $u = ModelUtilisateur::select($data);
         // Chargement de la vue
         if (is_null($u)) {
@@ -27,15 +27,15 @@ switch ($action) {
 
     case "readAllTrajets":
         require_once MODEL_PATH . 'ModelTrajet.php';
-        if (!isset($_GET['login'])) {
+        if (!is_null(myGet('login'))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
         // Initialisation des variables pour la vue        
-        $data = array("login" => $_GET['login']);
+        $data = array("login" => myGet('login'));
         $tab_trajets = ModelUtilisateur::findTrajets($data);
-        $login = $_GET['login'];
+        $login = myGet('login');
         $data2 = array("conducteur" => $login);
         $tab_conduc = ModelTrajet::selectWhere($data2);
         $view = "ListTrajets";
@@ -44,13 +44,13 @@ switch ($action) {
 
     case "deleteTrajet":
         require_once MODEL_PATH . 'ModelTrajet.php';
-        if (!(isset($_GET['login']) && isset($_GET['id']))) {
+        if (is_null(myGet('login')) || is_null(myGet('id'))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
-        $id = $_GET['id'];
-        $login = $_GET['login'];
+        $id = myGet('id');
+        $login = myGet('login');
         
         $data = array(
             "login" => $login,
@@ -67,12 +67,12 @@ switch ($action) {
         break;
 
     case "update":
-        if (!isset($_GET['login'])) {
+        if (!is_null(myGet('login'))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
-        $data = array("login" => $_GET['login']);
+        $data = array("login" => myGet('login'));
         $u = ModelUtilisateur::select($data);
         // Initialisation des variables pour la vue        
         $l = $u->login;
@@ -92,6 +92,8 @@ switch ($action) {
         $n = "";
         $p = "";
         $e = "";
+        $m1="";
+        $m2="";
         $label = "Créer";
         $login_status = "required";
         $pagetitle = "Création d'un utilisateur";
@@ -101,20 +103,27 @@ switch ($action) {
         break;
 
     case "save":
-        if (!(isset($_GET['login']) && isset($_GET['nom']) && isset($_GET['prenom']) && isset($_GET['email']))) {
+        if (is_null(myGet('login') || is_null(myGet('nom')) || is_null(myGet('prenom')) 
+                || is_null(myGet('email')) || is_null(myGet('mdp')) || is_null(myGet('mdp2')))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
+        if((myGet('mdp'))!=(myGet('mdp2'))){
+            $view = "error";
+            $pagetile ="Erreur";
+            break;
+        }
         $data = array(
-            "login" => $_GET["login"],
-            "nom" => $_GET["nom"],
-            "prenom" => $_GET["prenom"],
-            "email" => $_GET["email"]
+            "login" => myGet("login"),
+            "nom" => myGet("nom"),
+            "prenom" => myGet("prenom"),
+            "email" => myGet("email"),
+            "mdp" => hash('sha256',myGet("mdp") . Conf::getSeed())
         );
         ModelUtilisateur::insert($data);
         // Initialisation des variables pour la vue
-        $login = $_GET['login'];
+        $login = myGet('login');
         $tab_util = ModelUtilisateur::selectAll();
         // Chargement de la vue
         $view = "created";
@@ -122,20 +131,20 @@ switch ($action) {
         break;
 
     case "updated":
-        if (!(isset($_GET['login']) && isset($_GET['nom']) && isset($_GET['prenom']) && isset($_GET['email']))) {
+        if (is_null(myGet('login') || is_null(myGet('nom')) || is_null(myGet('prenom')) || is_null(myGet('email')))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
         $data = array(
-            "login" => $_GET["login"],
-            "nom" => $_GET["nom"],
-            "prenom" => $_GET["prenom"],
-            "email" => $_GET["email"]
+            "login" => myGet("login"),
+            "nom" => myGet("nom"),
+            "prenom" => myGet("prenom"),
+            "email" => myGet("email")
         );
         ModelUtilisateur::update($data);
         // Initialisation des variables pour la vue
-        $login = $_GET['login'];
+        $login = myGet('login');
         $tab_util = ModelUtilisateur::selectAll();
         // Chargement de la vue
         $view = "updated";
@@ -143,15 +152,15 @@ switch ($action) {
         break;
 
     case "delete":
-        if (!isset($_GET['login'])) {
+        if (!is_null(myGet('login'))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
-        $data = array("login" => $_GET['login']);
+        $data = array("login" => myGet('login'));
         $u = ModelUtilisateur::delete($data);
         // Initialisation des variables pour la vue
-        $login = $_GET['login'];
+        $login = myGet('login');
         $tab_util = ModelUtilisateur::selectAll();
         // Chargement de la vue
         $view = "deleted";
