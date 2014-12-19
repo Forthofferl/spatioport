@@ -4,8 +4,8 @@ class Conf {
 
     private static $database = array(
         'hostname' => 'localhost',  // infolimon (ou localhost)
-        'database' => 'localhost', // votre login dans notre cas
-        'login' => '',
+        'database' => 'spatioport', // votre login dans notre cas
+        'login' => 'root',
         'password' => ''
     );
     
