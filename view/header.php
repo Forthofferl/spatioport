@@ -11,15 +11,18 @@
                 <li>
                     <a href="index.php?page=index">Accueil</a>
                 </li><li>
-<<<<<<< HEAD
                     <a href="?controller=utilisateur&action=create">S'inscrire</a>
-=======
+				</li>
+				<li>
 					<a href="rechercherVaisseau.php?page=rechercherVaisseau">Rechercher un Vaisseau</a>
                 </li><li>
 					<a href="panier.php?page=panier">Panier</a>
                 </li><li>
 					<a href="profil.php?page=profil">Profil</a>
->>>>>>> 63c6f1cbe02ae88f1d7faaa1e6d5dc3c7ab5e548
+
+                </li>
+				<li>
+					<a href="?controller=utilisateur&action=connexion">Se connecter</a>
                 </li>
             </ul>
         </nav>
