@@ -6,7 +6,7 @@ class ModelUtilisateur extends Model {
     protected static $table = "utilisateur";
     protected static $primary_index = "login";
     
-    public static function findTrajets($data) {
+    /*public static function findTrajets($data) {
         try {
             $sql = "SELECT t.* FROM trajet t INNER JOIN passager p "
                     . "WHERE t.id = p.trajet_id AND p.utilisateur_login = :login";                       
@@ -31,6 +31,57 @@ class ModelUtilisateur extends Model {
         } catch (PDOException $e) {
             echo $e->getMessage();
             die("Erreur dans la BDD " . static::$table);
+        }
+    }*/
+	
+	public static function connexion($data) {
+        try {
+            $data['pwd'] = hash('sha256',$data['pwd'].Config::getSeed());
+            $req = self::$pdo->prepare('SELECT idUtilisateur, pseudo FROM Utilisateur WHERE pseudo = :pseudo AND pwd = :pwd');
+            $req->execute($data);
+            if ($req->rowCount() != 0) {
+                $data_recup = $req->fetch(PDO::FETCH_OBJ);
+                $_SESSION['idUtilisateur'] = $data_recup->idUtilisateur;
+                $_SESSION['pseudo'] = $data_recup->pseudo;
+            }
+        }catch (PDOException $e) {
+            echo $e->getMessage();
+            $messageErreur="Échec lors de la connexion d'un utilisateur";
+        }
+    }
+
+    public static function deconnexion(){
+        
+        session_unset();
+        session_destroy();
+    }
+
+    public static function checkExisteConnexion($data) {
+        try {
+            $data['pwd'] = hash('sha256',$data['pwd'].Config::getSeed());
+            $req = self::$pdo->prepare('SELECT idUtilisateur FROM Utilisateur WHERE pseudo = :pseudo AND pwd = :pwd');
+            $req->execute($data);
+            return ($req->rowCount() != 0);
+        }  catch (PDOException $e) {
+            echo $e->getMessage();
+            $messageErreur="Erreur lors de la recherche dans la base de données checkConnexion";
+        }
+    }
+
+
+    public static function inscription($data) {
+        if(!(ModelUtilisateur::checkAlreadyExist($data))) {
+            try {
+                $data['pwd'] = hash('sha256',$data['pwd'].Config::getSeed());
+                $req = self::$pdo->prepare('INSERT INTO Utilisateur (idUtilisateur, pseudo, prenom, nom, age, adr, pwd, email, numtel, nbrVaisseauAcheter) VALUES (:pseudo, :sexe, :age, :pwd, :email) ');
+                $req->execute($data);
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+                $messageErreur="Erreur lors de l'insertion dans la base de données pour inscription";
+            }
+        }
+        else {
+            $messageErreur="Pseudo ou email déjà existant";
         }
     }
 

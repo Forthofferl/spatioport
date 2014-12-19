@@ -4,8 +4,8 @@ echo <<< EOT
             <fieldset>
                 <legend>$label un utilisateur</legend>
                 <p>
-                    <label for="id_login">Login du conducteur</label> :
-                    <input type="text" value="$l" name="login" id="id_login" $login_status/>
+                    <label for="id_pseudo">Pseudo</label> :
+                    <input type="text" value="$ps" name="pseudo" id="id_pseudo" $pseudo_status/>
                 </p>
                 <p>
                     <label for="id_nom">Nom</label> :
@@ -19,14 +19,27 @@ echo <<< EOT
                     <label for="id_email">Email</label> :
                     <input type="text" value="$e" name="email" id="id_email" required/>
                 </p>
-                <p>
-                    <label for="id_mdpl">Mot de passe</label> :
-                    <input type="password" value="$m1" name="mdp" id="id_mdp" required/>
+				<p>
+                    <label for="id_age">Age</label> :
+                    <input type="text" value="$a" name="age" id="id_age" required/>
+                </p>
+				<p>
+                    <label for="id_adr">Adresse</label> :
+                    <input type="text" value="$adr" name="adr" id="id_adr" required/>
+                </p>
+				<p>
+                    <label for="id_numtel">Numéro de téléphone</label> :
+                    <input type="text" value="$n" name="numtel" id="id_numtel" required/>
                 </p>
                 <p>
-                    <label for="id_mdp2">Mot de passe</label> :
-                    <input type="password" value="$m2" name="mdp2" id="id_mdp2" required/>
+                    <label for="id_pwd">Mot de passe</label> :
+                    <input type="password" value="$m1" name="pwd" id="id_pwd" required/>
                 </p>
+                <p>
+                    <label for="id_pwd2">Mot de passe</label> :
+                    <input type="password" value="$m2" name="pwd2" id="id_pwd2" required/>
+                </p>
+				
                 <input type="hidden" name="action" value="$act" />
                 <input type="hidden" name="controller" value="utilisateur" />                
                 <p>

@@ -11,7 +11,7 @@
                 <li>
                     <a href="?controller=utilisateur">Gestion des utilisateurs</a>
                 </li><li>
-                    <a href="?controller=trajet">Gestion des trajets</a>
+                    <a href="?controller=utilisateur&action=create">S'inscrire</a>
                 </li>
             </ul>
         </nav>

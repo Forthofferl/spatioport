@@ -17,7 +17,8 @@ CREATE TABLE Utilisateur
 (
 	idUtilisateur INT NOT NULL AUTO_INCREMENT,
     pseudo VARCHAR(20) NOT NULL,
-    sexe CHAR(1) NOT NULL, /* H ou F */
+	prenom VARCHAR(20) NOT NULL,
+	nom VARCHAR(20) NOT NULL,
     age INT UNSIGNED NOT NULL, /* pas de signe donc toujours positif */
 	adr VARCHAR(255) NOT NULL,
 	pwd VARCHAR(255) NOT NULL,

@@ -88,14 +88,17 @@ switch ($action) {
         break;
 
     case "create":
-        $l = "";
+        $ps = "";
         $n = "";
         $p = "";
+		$a = "";
+		$adr = "";
+		$n = "";
         $e = "";
         $m1="";
         $m2="";
         $label = "Créer";
-        $login_status = "required";
+        $pseudo_status = "required";
         $pagetitle = "Création d'un utilisateur";
         $submit = "Création";
         $act = "save";
@@ -103,8 +106,8 @@ switch ($action) {
         break;
 
     case "save":
-        if (is_null(myGet('login') || is_null(myGet('nom')) || is_null(myGet('prenom')) 
-                || is_null(myGet('email')) || is_null(myGet('mdp')) || is_null(myGet('mdp2')))) {
+        if (is_null(myGet('pseudo') || is_null(myGet('prenom')) || is_null(myGet('nom')) 
+                || is_null(myGet('age')) || is_null(myGet('adr')) || is_null(myGet('pwd')) || is_null(myGet('pwd2')) || is_null(myGet('email')) || is_null(myGet('numtel')))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
@@ -115,15 +118,18 @@ switch ($action) {
             break;
         }
         $data = array(
-            "login" => myGet("login"),
+            "pseudo" => myGet("pseudo"),
             "nom" => myGet("nom"),
             "prenom" => myGet("prenom"),
             "email" => myGet("email"),
-            "mdp" => hash('sha256',myGet("mdp") . Conf::getSeed())
+			"adr" => myGet("adr"),
+			"age" => myGet("age"),
+			"numtel" => myGet("numtel"),
+            "pwd" => hash('sha256',myGet("pwd") . Conf::getSeed())
         );
         ModelUtilisateur::insert($data);
         // Initialisation des variables pour la vue
-        $login = myGet('login');
+        $login = myGet('pseudo');
         $tab_util = ModelUtilisateur::selectAll();
         // Chargement de la vue
         $view = "created";
