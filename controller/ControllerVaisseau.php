@@ -2,7 +2,7 @@
 
 define('VIEW_PATH', ROOT . DS . 'view' . DS);
 
-// On va chercher le modele dans "./model/ModelTrajet.php"
+// On va chercher le modele dans "./model/ModelVaisseau.php"
 require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';
 
 switch ($action) {
@@ -14,7 +14,7 @@ switch ($action) {
         }
         // Initialisation des variables pour la vue        
         $data = array("id" => myGet('id'));
-        $t = ModelTrajet::select($data);
+        $t = ModelVaisseau::select($data);
         // Chargement de la vue
         if (is_null($t)) {
             $view = "error";
