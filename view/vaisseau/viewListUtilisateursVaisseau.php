@@ -9,7 +9,7 @@ function view1($tu, $id, $passager = true) {
 
         $desinscrip = "";
         if ($passager) 
-            $desinscrip = ", <a href='?action=deleteUtilisateur&controller=trajet&id=$id&login=$l'>Désinscription</a>";
+            $desinscrip = ", <a href='?action=deleteUtilisateur&controller=vaisseau&id=$id&login=$l'>Désinscription</a>";
         
         
         echo <<< EOT
@@ -21,11 +21,11 @@ EOT;
 }
 
 function view2($t) {
-    $i = $t->id;
+    $v = $t->nomVaisseau;
     $c = $t->conducteur;
 
     // La syntaxe suivante permet de créer facilement des chaînes de caractères multi-lignes
-    echo "Le trajet n°$i est conduit par $c";
+    echo "Le $v est conduit par $c";
 }
 ?>
 <!-- Une variable $tab_util est donnée -->    

@@ -25,8 +25,8 @@ switch ($controller) {
         require_once "ControllerUtilisateur.php";
         break;
 
-    case "trajet":
-        require_once "ControllerTrajet.php";
+    case "vaisseau":
+        require_once "ControllerVaisseau.php";
         break;
 
     default:
