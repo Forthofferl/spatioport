@@ -25,46 +25,6 @@ switch ($action) {
         }
         break;
 
-    case "readAllTrajets":
-        require_once MODEL_PATH . 'ModelTrajet.php';
-        if (!is_null(myGet('login'))) {
-            $view = "error";
-            $pagetitle = "Erreur";
-            break;
-        }
-        // Initialisation des variables pour la vue        
-        $data = array("login" => myGet('login'));
-        $tab_trajets = ModelUtilisateur::findTrajets($data);
-        $login = myGet('login');
-        $data2 = array("conducteur" => $login);
-        $tab_conduc = ModelTrajet::selectWhere($data2);
-        $view = "ListTrajets";
-        $pagetitle = "Liste des trajets d'un utilisateur";
-        break;
-
-    case "deleteTrajet":
-        require_once MODEL_PATH . 'ModelTrajet.php';
-        if (is_null(myGet('login')) || is_null(myGet('id'))) {
-            $view = "error";
-            $pagetitle = "Erreur";
-            break;
-        }
-        $id = myGet('id');
-        $login = myGet('login');
-        
-        $data = array(
-            "login" => $login,
-            "id" => $id
-        );
-        ModelUtilisateur::deletePassager($data);
-        
-        $data = array("login" => $login);
-        $tab_trajets = ModelUtilisateur::findTrajets($data);
-        $data2 = array("conducteur" => $login);
-        $tab_conduc = ModelTrajet::selectWhere($data2);
-        $view = "DeleteTrajets";
-        $pagetitle = "Liste des trajets d'un utilisateur";
-        break;
 
     case "update":
         if (!is_null(myGet('login'))) {
@@ -104,7 +64,24 @@ switch ($action) {
         $act = "save";
         $view = "create";
         break;
-
+		
+	case "connexion":
+            //if(!estConnecte()){
+                $view="connexion";
+                $pagetitle="Connexion";
+				$submit = "Se connecter";
+				$label = "Connexion";
+                break;
+            //}
+            //else{
+              //header('Location: .');
+            //}
+	case "created":
+	
+			$view="created";
+			$pagetitle="Créer!";
+			$ps="";
+			break;
     case "save":
         if (is_null(myGet('pseudo') || is_null(myGet('prenom')) || is_null(myGet('nom')) 
                 || is_null(myGet('age')) || is_null(myGet('adr')) || is_null(myGet('pwd')) || is_null(myGet('pwd2')) || is_null(myGet('email')) || is_null(myGet('numtel')))) {
@@ -157,31 +134,6 @@ switch ($action) {
         $pagetitle = "Liste des utilisateurs";
         break;
 
-    case "delete":
-        if (!is_null(myGet('login'))) {
-            $view = "error";
-            $pagetitle = "Erreur";
-            break;
-        }
-        $data = array("login" => myGet('login'));
-        $u = ModelUtilisateur::delete($data);
-        // Initialisation des variables pour la vue
-        $login = myGet('login');
-        $tab_util = ModelUtilisateur::selectAll();
-        // Chargement de la vue
-        $view = "deleted";
-        $pagetitle = "Liste des utilisateurs";
-        break;
 
-    default:
-    // Si l'action est inconnue, nous effectuerons 'readAll'
-
-    case "readAll":
-        // Initialisation des variables pour la vue
-        $tab_util = ModelUtilisateur::selectAll();
-        // Chargement de la vue
-        $view = "list";
-        $pagetitle = "Liste des utilisateurs";
-        break;
 }
 require VIEW_PATH . "view.php";
