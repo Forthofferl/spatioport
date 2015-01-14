@@ -21,7 +21,7 @@ switch ($action) {
             $pagetitle = "Erreur";
         } else {
             $view = "find";
-            $pagetitle = "Détail d'un trajet";
+            $pagetitle = "Détail d'un ";
         }
         break;
 
@@ -34,13 +34,13 @@ switch ($action) {
         }
         // Initialisation des variables pour la vue        
         $data = array("id" => myGet('id'));
-        $tab_util = ModelTrajet::findUtilisateurs($data);
+        $tab_util = ModelVaisseau::findUtilisateurs($data);
         $id = myGet('id');
-        $t = ModelTrajet::select($data);
+        $t = ModelVaisseau::select($data);
         $data2 = array ("login" => $t->conducteur);
         $u = ModelUtilisateur::select($data2);
         $view = "ListUtilisateurs";
-        $pagetitle = "Liste des utilisateurs d'un trajet";
+        $pagetitle = "Liste des utilisateurs d'un Vaisseau";
         break;
         
     case "deleteUtilisateur":
@@ -53,15 +53,15 @@ switch ($action) {
         $id = myGet('id');
         $login = myGet('login');        
         $data = array("id" => $id, "login" => $login);
-        ModelTrajet::deletePassager($data);
+        ModelVaisseau::deletePassager($data);
         
         $data = array("id" => $id);
-        $tab_util = ModelTrajet::findUtilisateurs($data);        
-        $t = ModelTrajet::select($data);
+        $tab_util = ModelVaisseau::findUtilisateurs($data);        
+        $t = ModelVaisseau::select($data);
         $data2 = array ("login" => $t->conducteur);
         $u = ModelUtilisateur::select($data2);
         $view = "DeleteUtilisateurs";
-        $pagetitle = "Liste des utilisateurs d'un trajet";
+        $pagetitle = "Liste des utilisateurs d'un Vaisseau";
         break;
         
     case "update":
@@ -71,7 +71,7 @@ switch ($action) {
             break;
         }
         $data = array("id" => myGet('id'));
-        $t = ModelTrajet::select($data);
+        $t = ModelVaisseau::select($data);
         // Initialisation des variables pour la vue        
         $i = $t->id;
         $hidden_id = "<input type='hidden' name='id' value='$i' />"; //$t->id;
@@ -80,7 +80,7 @@ switch ($action) {
         $a = $t->arrivee;
         $p = $t->prix;
         $n = $t->nbplaces;
-        $pagetitle = "Mise à jour d'un trajet";
+        $pagetitle = "Mise à jour d'un Vaisseau";
         $label = "Modifier";
         $submit = "Mise à jour";
         $act = "updated";
@@ -95,7 +95,7 @@ switch ($action) {
         $p = "";
         $n = "";
         $label = "Créer";
-        $pagetitle = "Création d'un trajet";
+        $pagetitle = "Création d'un Vaisseau";
         $submit = "Création";
         $act = "save";
         $view = "create";
@@ -115,12 +115,12 @@ switch ($action) {
             "prix" => myGet("prix"),
             "nbplaces" => myGet("nbplaces")
         );
-        $i = ModelTrajet::insertAndGetId($data);
+        $i = ModelVaisseau::insertAndGetId($data);
         // Initialisation des variables pour la vue
-        $tab_trajets = ModelTrajet::selectAll();
+        $tab_Vaisseaus = ModelVaisseau::selectAll();
         // Chargement de la vue
         $view = "created";
-        $pagetitle = "Liste des trajets";
+        $pagetitle = "Liste des Vaisseaus";
         break;
 
     case "updated":
@@ -138,13 +138,13 @@ switch ($action) {
             "prix" => myGet("prix"),
             "nbplaces" => myGet("nbplaces")
         );
-        ModelTrajet::update($data);
+        ModelVaisseau::update($data);
         // Initialisation des variables pour la vue
         $i = myGet('id');
-        $tab_trajets = ModelTrajet::selectAll();
+        $tab_Vaisseaus = ModelVaisseau::selectAll();
         // Chargement de la vue
         $view = "updated";
-        $pagetitle = "Liste des trajets";
+        $pagetitle = "Liste des Vaisseaus";
         break;
 
     case "delete":
@@ -154,13 +154,13 @@ switch ($action) {
             break;
         }
         $data = array("id" => myGet('id'));
-        $t = ModelTrajet::delete($data);
+        $t = ModelVaisseau::delete($data);
         // Initialisation des variables pour la vue
         $i = myGet('id');
-        $tab_trajets = ModelTrajet::selectAll();
+        $tab_Vaisseaus = ModelVaisseau::selectAll();
         // Chargement de la vue
         $view = "deleted";
-        $pagetitle = "Liste des trajets";
+        $pagetitle = "Liste des Vaisseaus";
         break;
 
     default:
@@ -168,10 +168,10 @@ switch ($action) {
 
     case "readAll":
         // Initialisation des variables pour la vue
-        $tab_trajets = ModelTrajet::selectAll();
+        $tab_Vaisseaus = ModelVaisseau::selectAll();
         // Chargement de la vue
         $view = "list";
-        $pagetitle = "Liste des trajets";
+        $pagetitle = "Liste des Vaisseaus";
         break;
 }
 require VIEW_PATH . "view.php";
