@@ -9,7 +9,7 @@ function myGet($nomvar){
     return null;
 }
 
-define('MODEL_PATH', ROOT . DS . 'model' . DS);
+
 
 if (!is_null(myGet('controller')))
     $controller = myGet('controller'); //recupere le controlleur passe dans l'url

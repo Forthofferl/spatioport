@@ -10,6 +10,7 @@ define('CTR_PATH', ROOT.DS.'controller'.DS);
 
 define('VIEW_PATH_BASE', BASE.'view/');
 define('VIEW_PATH', ROOT . DS . 'view' . DS);
+define('MODEL_PATH', ROOT . DS . 'model' . DS);
 
 
 
