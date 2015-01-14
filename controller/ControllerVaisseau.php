@@ -1,6 +1,6 @@
 <?php
 
-define('VIEW_PATH', ROOT . DS . 'view' . DS);
+require_once('index.php');
 
 // On va chercher le modele dans "./model/ModelVaisseau.php"
 require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';

@@ -1,7 +1,7 @@
 <?php
 
-define('VIEW_PATH', ROOT . DS . 'view' . DS);
-
+require_once('index.php');
+$controller="Utilisateur";
 // On va chercher le modele dans "./model/ModelUtilisateur.php"
 require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';
 
@@ -47,41 +47,51 @@ switch ($action) {
         $view = "create";
         break;
 
-    case "create":
-        $ps = "";
-        $n = "";
-        $p = "";
-		$a = "";
-		$adr = "";
-		$n = "";
-        $e = "";
-        $m1="";
-        $m2="";
-        $label = "Créer";
-        $pseudo_status = "required";
-        $pagetitle = "Création d'un utilisateur";
-        $submit = "Création";
-        $act = "save";
-        $view = "create";
-        break;
+    
 		
-	case "connexion":
-            //if(!estConnecte()){
+	case "connect":
+            if(!estConnecte()){
                 $view="connexion";
                 $pagetitle="Connexion";
 				$submit = "Se connecter";
 				$label = "Connexion";
                 break;
-            //}
-            //else{
-              //header('Location: .');
-            //}
+            }
+            else{
+              header('Location: .');
+            }
+			
+	case "connected":
+		
+		$_SESSION['pseudo']=myGet('pseudo');
+			$_SESSION['pwd']=myGet('pwd');
+			if ((is_null($_SESSION['pseudo']))&&(is_null($_SESSION['pwd']))){
+				$view = "error";
+				$pagetitle = "Erreur";
+				break;
+			}
+			
+		$data = array("pseudo" => $_SESSION['pseudo'],"pwd" => $_SESSION['pwd']);
+		if(count(ModelUtilisateur::selectWhere($data))!=null){
+			
+			// Chargement de la vue
+		
+				$view = "connected";
+				$pagetitle = "Connecté";
+		}	
+		else{
+			$view = "error";
+				$pagetitle = "Erreur";
+				break;
+		}
+		
 	case "created":
 	
 			$view="created";
 			$pagetitle="Créer!";
-			$ps="";
+			$ps=myget('pseudo');
 			break;
+			
     case "save":
         if (is_null(myGet('pseudo') || is_null(myGet('prenom')) || is_null(myGet('nom')) 
                 || is_null(myGet('age')) || is_null(myGet('adr')) || is_null(myGet('pwd')) || is_null(myGet('pwd2')) || is_null(myGet('email')) || is_null(myGet('numtel')))) {
@@ -133,7 +143,28 @@ switch ($action) {
         $view = "updated";
         $pagetitle = "Liste des utilisateurs";
         break;
-
+		
+	
+	default:
+	
+	case "create":
+        $ps = "";
+        $n = "";
+        $p = "";
+		$a = "";
+		$adr = "";
+		$n = "";
+        $e = "";
+        $m1="";
+        $m2="";
+        $label = "Créer";
+        $pseudo_status = "required";
+        $pagetitle = "Création d'un utilisateur";
+	
+        $submit = "Création";
+        $act = "save";
+        $view = "create";
+        break;
 
 }
 require VIEW_PATH . "view.php";

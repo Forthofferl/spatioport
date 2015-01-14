@@ -1,5 +1,6 @@
 <?php
-
+require_once('index.php');
+session_start();
 function myGet($nomvar){
     if (isset($_GET[$nomvar]))
         return ($_GET[$nomvar]);

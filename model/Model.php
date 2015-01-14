@@ -140,6 +140,9 @@ class Model {
             die("Erreur lors de la mise à jour dans la BDD " . static::$table);
         }
     }
+	public static function estConnecte() {
+		return(isset($_SESSION['idUtilisateur']));
+	}
 
 }
 

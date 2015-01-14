@@ -1,6 +1,7 @@
-<li <?php if (isset($view)) if ($page=="utilisateur" && ($view=="creation" || $view=="created")) echo 'class="active"'; ?>>
-<a href="joueur.php?action=inscription"><span class="fa fa-coffee"></span> S'inscrire</a>
-<li class="dropdown"> <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="fa fa-toggle-on"></span> Se connecter</a>
+<li <?php if (isset($view)) //if ($page=="utilisateur" && ($view=="creation" || $view=="created")) echo 'class="active"'; ?>>
+<a href="ControllerUtilisateur.php?$action=create"><span ></span> S'inscrire</a></li>
+<li><a href="ControllerUtilisateur.php?$action=connect"><span ></span> Se connecter</a></li>
+<!--<li class="dropdown"> <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="fa fa-toggle-on"></span> Se connecter</a>
   <div class="dropdown-menu" style="padding: 15px;">
     <form method="post" action="joueur.php?action=connexion">
       <input type="text" id="id_pseudo" class="form-control" name="pseudo" placeholder="Pseudo" required/><br/>
@@ -18,4 +19,4 @@
       e.stopPropagation();
     });
   });
-  </script>
+  </script>-->
