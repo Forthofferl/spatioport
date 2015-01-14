@@ -2,9 +2,9 @@
 
 require_once 'Model.php';
 
-class ModelTrajet extends Model {
+class ModelVaisseau extends Model {
 
-    protected static $table = "trajet";
+    protected static $table = "vaisseau";
     protected static $primary_index = "id";
     
     public static function insertAndGetId($data) {
@@ -35,7 +35,7 @@ class ModelTrajet extends Model {
             $table = static::$table;
             $primary = static::$primary_index;
             $sql = "SELECT u.* FROM utilisateur u INNER JOIN passager p "
-                    . "WHERE u.login = p.utilisateur_login AND p.trajet_id = :id";                       
+                    . "WHERE u.login = p.utilisateur_login AND p.Vaisseau_id = :id";                       
             // Preparation de la requete
             $req = self::$pdo->prepare($sql);
             // execution de la requete
@@ -49,7 +49,7 @@ class ModelTrajet extends Model {
     
     public static function deletePassager($data) {
         try {
-            $sql = "DELETE FROM passager WHERE `trajet_id` = :id AND `utilisateur_login` = :login";            
+            $sql = "DELETE FROM passager WHERE `Vaisseau_id` = :id AND `utilisateur_login` = :login";            
             // Preparation de la requete
             $req = self::$pdo->prepare($sql);
             // execution de la requete            
