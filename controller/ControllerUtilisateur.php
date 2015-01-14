@@ -1,6 +1,6 @@
 <?php
 
-require_once('index.php');
+require_once('config.inc.php');
 $controller="Utilisateur";
 // On va chercher le modele dans "./model/ModelUtilisateur.php"
 require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';

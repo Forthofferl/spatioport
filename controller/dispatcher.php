@@ -1,5 +1,5 @@
 <?php
-require_once('index.php');
+require_once('config.inc.php');
 session_start();
 function myGet($nomvar){
     if (isset($_GET[$nomvar]))
