@@ -4,7 +4,7 @@ require_once 'Model.php';
 
 class ModelUtilisateur extends Model {
     protected static $table = "utilisateur";
-    protected static $primary_index = "login";
+    protected static $primary_index = "idUtilisateur";
     
     /*public static function findTrajets($data) {
         try {
@@ -35,19 +35,8 @@ class ModelUtilisateur extends Model {
     }*/
 	
 	public static function connexion($data) {
-        try {
-            $data['pwd'] = hash('sha256',$data['pwd'].Config::getSeed());
-            $req = self::$pdo->prepare('SELECT idUtilisateur, pseudo FROM Utilisateur WHERE pseudo = :pseudo AND pwd = :pwd');
-            $req->execute($data);
-            if ($req->rowCount() != 0) {
-                $data_recup = $req->fetch(PDO::FETCH_OBJ);
-                $_SESSION['idUtilisateur'] = $data_recup->idUtilisateur;
-                $_SESSION['pseudo'] = $data_recup->pseudo;
-            }
-        }catch (PDOException $e) {
-            echo $e->getMessage();
-            $messageErreur="Échec lors de la connexion d'un utilisateur";
-        }
+        $_SESSION['idUtilisateur'] = $data['idUtilisateur'];
+        $_SESSION['pseudo'] = $data['pseudo'];
     }
 
     public static function deconnexion(){

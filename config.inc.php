@@ -12,10 +12,10 @@ define('VIEW_PATH_BASE', BASE.'view/');
 define('VIEW_PATH', ROOT . DS . 'view' . DS);
 define('MODEL_PATH', ROOT . DS . 'model' . DS);
 
-
+session_start();
 
 // vérifier si l'utilisateur est connecté
 function estConnecte() {
-    return(isset($_SESSION['idUtilisateur']));
+    return(isset($_SESSION['pseudo']));
 }
 ?>

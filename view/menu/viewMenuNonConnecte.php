@@ -1,9 +1,9 @@
-<li class="active"><a href="index.php?action=classement"><span class="fa fa-sort-amount-asc"></span> Accueil</a></li>
-<li class="active"><a href="index.php?action=statistiques"><span class="fa fa-pie-chart"></span> Recherche de vaisseau</a></li>
-<li class="active"><a href="index.php?action=regles"><span class="fa fa-file-text"></span>Panier </a></li>
-<li class="active"><a href="joueur.php?action=inscription"><span class="fa fa-coffee"></span> S'inscrire</a></li>
-<li class="dropdown"> <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="fa fa-toggle-on"></span> Se connecter</a>
-  <div class="dropdown-menu" style="padding: 15px;">
+<li class="active"><a href="utilisateur.php?action=create"><span class="fa fa-sort-amount-asc"></span> Accueil</a></li>
+<li class="active"><a href="utilisateur.php?action=recherche"><span class="fa fa-pie-chart"></span> Recherche de vaisseau</a></li>
+<li class="active"><a href="utilisateur.php?action=panier"><span class="fa fa-file-text"></span>Panier </a></li>
+<li class="active"><a href="utilisateur.php?action=create"><span class="fa fa-coffee"></span> S'inscrire</a></li>
+<li class="active"> <a href="utilisateur.php?action=connect"><span class="fa fa-coffee"></span> Se connecter</a></li>
+  <!--<div class="dropdown-menu" style="padding: 15px;">
     <form method="post" action="joueur.php?action=connect">
       <input type="text" id="id_pseudo" class="form-control" name="pseudo" placeholder="Pseudo" required/><br/>
       <input type="password" id="id_pwd" class="form-control" name="pwd" placeholder="Mot de passe" required/><br/>
@@ -21,4 +21,4 @@
       e.stopPropagation();
     });
   });
-  </script>
+  </script>-->

@@ -25,7 +25,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <?php include_once VIEW_PATH . 'menu' . DS . 'viewMenuNonConnecte.php';  ?>
+                    <?php if(estConnecte())include_once VIEW_PATH . 'menu' . DS . 'viewMenuConnecte.php';  
+					else include_once VIEW_PATH . 'menu' . DS . 'viewMenuNonConnecte.php'; ?>
                 </ul>
             </div><!--/.nav-collapse -->
 			</div><!--/.container -->

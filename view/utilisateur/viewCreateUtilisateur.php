@@ -2,7 +2,7 @@
 echo <<< EOT
         <form method="post" action=".">
             <fieldset>
-                <legend>$label un utilisateur</legend>
+                <legend>$label d'un utilisateur</legend>
                 <p>
                     <label for="id_pseudo">Pseudo</label> :
                     <input type="text" value="$ps" name="pseudo" id="id_pseudo" $pseudo_status/>

@@ -140,9 +140,23 @@ class Model {
             die("Erreur lors de la mise à jour dans la BDD " . static::$table);
         }
     }
-	public static function estConnecte() {
-		return(isset($_SESSION['idUtilisateur']));
-	}
+	public static function suppressionWhere($data) {
+      try {
+        $table = static::$table;
+        $primary = static::$primary_index;
+        $where = "";
+        foreach ($data as $key => $value)
+        $where .= " $table.$key=:$key AND";
+        $where = rtrim($where, 'AND');
+        $sql = "DELETE FROM $table WHERE $where";
+        $req = self::$pdo->prepare($sql);
+        return $req->execute($data);
+      } catch (PDOException $e) {
+        echo $e->getMessage();
+        die("Erreur lors de la suppression dans la BDD " . static::$table);
+      }
+    }
+	
 
 }
 

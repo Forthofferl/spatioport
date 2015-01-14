@@ -47,49 +47,26 @@ switch ($action) {
         $view = "create";
         break;
 
-    
+    case "connect":
 		
-	case "connect":
-            if(!estConnecte()){
-                $view="connexion";
-                $pagetitle="Connexion";
-				$submit = "Se connecter";
-				$label = "Connexion";
-                break;
-            }
-            else{
-              header('Location: .');
-            }
-			
-	case "connected":
+		$view="connexion";
+		$pagetitle="connexion";
+		$label="connexion";
+		$submit="Se connecter";
+		break;
 		
-		$_SESSION['pseudo']=myGet('pseudo');
-			$_SESSION['pwd']=myGet('pwd');
-			if ((is_null($_SESSION['pseudo']))&&(is_null($_SESSION['pwd']))){
-				$view = "error";
-				$pagetitle = "Erreur";
-				break;
-			}
-			
-		$data = array("pseudo" => $_SESSION['pseudo'],"pwd" => $_SESSION['pwd']);
-		if(count(ModelUtilisateur::selectWhere($data))!=null){
-			
-			// Chargement de la vue
-		
-				$view = "connected";
-				$pagetitle = "Connecté";
-		}	
-		else{
-			$view = "error";
-				$pagetitle = "Erreur";
-				break;
-		}
+	case "deconnexion":
+                ModelUtilisateur::deconnexion();
+                header('Location: .');
+            
+           
+    break;
 		
 	case "created":
 	
 			$view="created";
 			$pagetitle="Créer!";
-			$ps=myget('pseudo');
+			$ps=myGet('pseudo');
 			break;
 			
     case "save":
@@ -143,8 +120,43 @@ switch ($action) {
         $view = "updated";
         $pagetitle = "Liste des utilisateurs";
         break;
-		
 	
+		
+	case "connected":
+            if(!estConnecte()){
+              if (!(isset($_POST['pseudo']) || isset($_POST['pwd']))){
+                  header('Location: .');
+              }
+                $data = array(
+                "pseudo" => $_POST['pseudo'],
+                "pwd" => hash('sha256',$_POST['pwd'].conf::getSeed()),
+                );
+				//var_dump($data);
+                $user = ModelUtilisateur::selectWhere($data);
+				//var_dump($user);
+                if($user != null) {
+                  
+                    $data2 = array(
+                      "idUtilisateur" => $user[0]->idUtilisateur,
+                      "pseudo" => $user[0]->pseudo
+                    );
+                    ModelUtilisateur::connexion($data2);
+                    /*if(isset($_POST['redirurl'])) $url = $_POST['redirurl'];
+                    else{$url = ".";}
+                    header("Location:$url");*/
+					$view="connected";
+					$pagetitle="Vous êtes connecté!";
+                }
+                else{
+				$view = "error";
+				$pagetitle = "Erreur";
+				break;
+				} 
+            }
+            else{
+              header('Location: .');
+            }
+			break;
 	default:
 	
 	case "create":
@@ -165,6 +177,14 @@ switch ($action) {
         $act = "save";
         $view = "create";
         break;
-
 }
+            
+			
+    
+			
+	
+		
+	
+		
+
 require VIEW_PATH . "view.php";
