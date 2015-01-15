@@ -9,10 +9,7 @@ require_once('config.inc.php');
 // ./controller/dispatcher.php (sous Linux)
 include ROOT . DS . 'controller' . DS . 'dispatcher.php';
 
-$page = 'index';
-if (isset($_GET['action']))
-    $action = $_GET['action'];
-include CTR_PATH.'ControllerUtilisateur.php';
+
 
 ?>
 

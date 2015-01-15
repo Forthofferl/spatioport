@@ -16,10 +16,10 @@ CREATE TABLE Vaisseau
 CREATE TABLE Utilisateur
 (
 	idUtilisateur INT NOT NULL AUTO_INCREMENT,
-    pseudo VARCHAR(20) NOT NULL,
+   	pseudo VARCHAR(20) NOT NULL,
 	prenom VARCHAR(20) NOT NULL,
 	nom VARCHAR(20) NOT NULL,
-    age INT UNSIGNED NOT NULL, /* pas de signe donc toujours positif */
+    	age INT UNSIGNED NOT NULL, /* pas de signe donc toujours positif */
 	adr VARCHAR(255) NOT NULL,
 	pwd VARCHAR(255) NOT NULL,
 	email VARCHAR(255) NOT NULL,

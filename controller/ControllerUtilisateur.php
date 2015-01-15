@@ -4,6 +4,7 @@ require_once('config.inc.php');
 $controller="Utilisateur";
 // On va chercher le modele dans "./model/ModelUtilisateur.php"
 require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';
+require_once MODEL_PATH . 'Model.php';
 
 switch ($action) {
     case "read":
@@ -90,6 +91,7 @@ switch ($action) {
 				$pagetitle = "Erreur";
 				break;
 				} 
+				
             }
             else{
               header('Location: .');
@@ -138,12 +140,12 @@ switch ($action) {
         $tab_util = ModelUtilisateur::selectAll();
         // Chargement de la vue
         $view = "created";
-        $pagetitle = "Liste des utilisateurs";
+        $pagetitle = "Créer";
         break;
 
     case "updated":
         if (is_null(myGet('login') || is_null(myGet('nom')) || is_null(myGet('prenom')) || is_null(myGet('email')))) {
-            $view = "error";
+            $view = "created";
             $pagetitle = "Erreur";
             break;
         }
@@ -180,9 +182,8 @@ switch ($action) {
         $pagetitle = "Création d'un utilisateur";
 	
         $submit = "Création";
-        $act = "save";
         $view = "create";
-        
+        $act="save";
 		break;
 	default:
 	

@@ -28,6 +28,7 @@
                     <?php 	
 								
 							if(estConnecte()){
+							
 								$t = estAdmin();
 								var_Dump($t);
 									if(estAdmin()){ 
