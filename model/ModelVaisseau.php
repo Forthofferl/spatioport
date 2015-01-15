@@ -5,7 +5,7 @@ require_once 'Model.php';
 class ModelVaisseau extends Model {
 
     protected static $table = "vaisseau";
-    protected static $primary_index = "id";
+    protected static $primary_index = "idVaisseau";
     
     public static function insertAndGetId($data) {
         try {
@@ -30,7 +30,7 @@ class ModelVaisseau extends Model {
         }
     }
 
-    public static function findUtilisateurs($data) {
+    /*public static function findUtilisateurs($data) {
         try {
             $table = static::$table;
             $primary = static::$primary_index;
@@ -58,7 +58,7 @@ class ModelVaisseau extends Model {
             echo $e->getMessage();
             die("Erreur dans la BDD " . static::$table);
         }
-    }
+    }*/
 }
 
 ?>

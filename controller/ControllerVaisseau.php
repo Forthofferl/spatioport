@@ -1,6 +1,6 @@
 <?php
 
-require_once('index.php');
+require_once('config.inc.php');
 
 // On va chercher le modele dans "./model/ModelVaisseau.php"
 require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';
@@ -102,18 +102,17 @@ switch ($action) {
         break;
 
     case "save":
-        if (!(is_null(myGet('conducteur')) || is_null(myGet('depart')) || is_null(myGet('arrivee')) 
-                || is_null(myGet('prix')) || is_null(myGet('nbplaces')))) {
+        if (!(is_null(myGet('nomVaisseau')) || is_null(myGet('prixVaisseau')) || is_null(myGet('nbrEnStock')) 
+                || is_null(myGet('descripVaisseau')))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
         $data = array(
-            "conducteur" => myGet("conducteur"),
-            "depart" => myGet("depart"),
-            "arrivee" => myGet("arrivee"),
-            "prix" => myGet("prix"),
-            "nbplaces" => myGet("nbplaces")
+            "nomVaisseau" => myGet("nomVaisseau"),
+            "prixVaisseau" => myGet("prixVaisseau"),
+            "nbrEnStock" => myGet("nbrEnStock"),
+            "descripVaisseau" => myGet("descripVaisseau")
         );
         $i = ModelVaisseau::insertAndGetId($data);
         // Initialisation des variables pour la vue

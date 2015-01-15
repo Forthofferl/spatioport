@@ -148,8 +148,9 @@ switch ($action) {
 					$pagetitle="Vous êtes connecté!";
                 }
                 else{
-				$view = "error";
-				$pagetitle = "Erreur";
+				//$messageErreur="Mot de passe ou identifiant incorrect";
+				$view="error";
+				$pagetitle="Erreur!";
 				break;
 				} 
             }
