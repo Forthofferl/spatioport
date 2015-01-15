@@ -63,12 +63,12 @@ switch ($action) {
 				}
                 $data = array(
                 "pseudo" => $_POST['pseudo'],
-                "pwd" => hash('sha256',$_POST['pwd'].conf::getSeed()),
+                "pwd" => hash('sha256',$_POST['pwd'].Conf::getSeed()),
                 );
 			
-				//var_dump($data);
+				var_dump($data);
                 $user = ModelUtilisateur::selectWhere($data);
-				//var_dump($user);
+				var_dump($user);
                 if($user != null) {
                   
                     $data2 = array(
