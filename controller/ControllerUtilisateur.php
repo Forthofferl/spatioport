@@ -72,11 +72,13 @@ switch ($action) {
                 if($user != null) {
                   
                     $data2 = array(
+					  "admin" =>$user[0]->admin,
                       "idUtilisateur" => $user[0]->idUtilisateur,
-                      "pseudo" => $user[0]->pseudo,
-					  "admin" =>$user[0]->admin
+                      "pseudo" => $user[0]->pseudo
+					
                     );
                     ModelUtilisateur::connexion($data2);
+					var_dump($_SESSION);
                     /*if(isset($_POST['redirurl'])) $url = $_POST['redirurl'];
                     else{$url = ".";}
                     header("Location:$url");*/

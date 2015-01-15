@@ -38,6 +38,7 @@ class ModelUtilisateur extends Model {
         $_SESSION['idUtilisateur'] = $data['idUtilisateur'];
         $_SESSION['pseudo'] = $data['pseudo'];
 		$_SESSION['admin'] = $data['admin'];
+		
     }
 
     public static function deconnexion(){
