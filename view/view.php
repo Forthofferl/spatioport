@@ -25,9 +25,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <?php 	if(estConnecte()|| estAdmin()){ 
+                    <?php 	if(estConnecte()&& estAdmin()){ 
 								include_once VIEW_PATH . 'menu' . DS . 'viewMenuAdmin.php';
-							}else if(estConnecte()|| !estAdmin()){
+							}else if(estConnecte()&& !estAdmin()){
 								include_once VIEW_PATH . 'menu'. DS .'viewMenuConnecte.php';
 								}
 							else{ include_once VIEW_PATH . 'menu' . DS . 'viewMenuNonConnecte.php';
