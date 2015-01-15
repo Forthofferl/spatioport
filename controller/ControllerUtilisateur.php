@@ -4,6 +4,7 @@ require_once('config.inc.php');
 $controller="Utilisateur";
 // On va chercher le modele dans "./model/ModelUtilisateur.php"
 require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';
+require_once MODEL_PATH . 'Model.php';
 
 switch ($action) {
     case "read":
@@ -55,6 +56,48 @@ switch ($action) {
 		$submit="Se connecter";
 		break;
 		
+	case "connected":
+            if(!estConnecte()){
+				
+				if (!(isset($_POST['pseudo']) || isset($_POST['pwd']))){
+                  header('Location: .');
+				}
+                $data = array(
+                "pseudo" => $_POST['pseudo'],
+                "pwd" => hash('sha256',$_POST['pwd'].Conf::getSeed()),
+                );
+			
+				var_dump($data);
+                $user = ModelUtilisateur::selectWhere($data);
+				var_dump($user);
+                if($user != null) {
+                  
+                    $data2 = array(
+					  "admin" =>$user[0]->admin,
+                      "idUtilisateur" => $user[0]->idUtilisateur,
+                      "pseudo" => $user[0]->pseudo
+					
+                    );
+                    ModelUtilisateur::connexion($data2);
+					var_dump($_SESSION);
+                    /*if(isset($_POST['redirurl'])) $url = $_POST['redirurl'];
+                    else{$url = ".";}
+                    header("Location:$url");*/
+					$view="connected";
+					$pagetitle="Vous êtes connecté!";
+                }
+                else{
+				$view = "error";
+				$pagetitle = "Erreur";
+				break;
+				} 
+				
+            }
+            else{
+              header('Location: .');
+            }
+			break;
+		
 	case "deconnexion":
                 ModelUtilisateur::deconnexion();
                 header('Location: .');
@@ -97,12 +140,12 @@ switch ($action) {
         $tab_util = ModelUtilisateur::selectAll();
         // Chargement de la vue
         $view = "created";
-        $pagetitle = "Liste des utilisateurs";
+        $pagetitle = "Créer";
         break;
 
     case "updated":
         if (is_null(myGet('login') || is_null(myGet('nom')) || is_null(myGet('prenom')) || is_null(myGet('email')))) {
-            $view = "error";
+            $view = "created";
             $pagetitle = "Erreur";
             break;
         }
@@ -122,44 +165,9 @@ switch ($action) {
         break;
 	
 		
-	case "connected":
-            if(!estConnecte()){
-              if (!(isset($_POST['pseudo']) || isset($_POST['pwd']))){
-                  header('Location: .');
-              }
-                $data = array(
-                "pseudo" => $_POST['pseudo'],
-                "pwd" => hash('sha256',$_POST['pwd'].conf::getSeed()),
-                );
-				//var_dump($data);
-                $user = ModelUtilisateur::selectWhere($data);
-				//var_dump($user);
-                if($user != null) {
-                  
-                    $data2 = array(
-                      "idUtilisateur" => $user[0]->idUtilisateur,
-                      "pseudo" => $user[0]->pseudo
-                    );
-                    ModelUtilisateur::connexion($data2);
-                    /*if(isset($_POST['redirurl'])) $url = $_POST['redirurl'];
-                    else{$url = ".";}
-                    header("Location:$url");*/
-					$view="connected";
-					$pagetitle="Vous êtes connecté!";
-                }
-                else{
-				//$messageErreur="Mot de passe ou identifiant incorrect";
-				$view="error";
-				$pagetitle="Erreur!";
-				break;
-				} 
-            }
-            else{
-              header('Location: .');
-            }
-			break;
-	default:
+
 	
+		
 	case "create":
         $ps = "";
         $n = "";
@@ -175,9 +183,12 @@ switch ($action) {
         $pagetitle = "Création d'un utilisateur";
 	
         $submit = "Création";
-        $act = "save";
         $view = "create";
-        break;
+        $act="save";
+		break;
+	default:
+	
+	
 }
             
 			

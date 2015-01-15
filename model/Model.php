@@ -100,7 +100,7 @@ class Model {
 
     public static function insert($data) {
         try {
-            $table = static::$table;
+            $table = "utilisateur";
             $indices = "";
             $values = "";
             foreach ($data as $key => $value) {

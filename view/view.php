@@ -25,8 +25,22 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <?php if(estConnecte())include_once VIEW_PATH . 'menu' . DS . 'viewMenuConnecte.php';  
-					else include_once VIEW_PATH . 'menu' . DS . 'viewMenuNonConnecte.php'; ?>
+                    <?php 	
+								
+							if(estConnecte()){
+							
+								$t = estAdmin();
+								var_Dump($t);
+									if(estAdmin()){ 
+										include_once VIEW_PATH . 'menu' . DS . 'viewMenuAdmin.php';
+									}else{
+										include_once VIEW_PATH . 'menu'. DS .'viewMenuConnecte.php';
+									}
+							}else{ include_once VIEW_PATH . 'menu' . DS . 'viewMenuNonConnecte.php';
+							}
+						
+							
+					?>
                 </ul>
             </div><!--/.nav-collapse -->
 			</div><!--/.container -->

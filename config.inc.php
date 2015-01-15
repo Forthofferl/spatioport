@@ -18,4 +18,11 @@ session_start();
 function estConnecte() {
     return(isset($_SESSION['pseudo']));
 }
+
+function estAdmin() {
+	
+	return (! empty ( $_SESSION ['admin ']) && $_SESSION ['admin ']=="1") ;
+
+}
+
 ?>

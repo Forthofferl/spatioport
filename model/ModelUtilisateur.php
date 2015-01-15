@@ -37,6 +37,8 @@ class ModelUtilisateur extends Model {
 	public static function connexion($data) {
         $_SESSION['idUtilisateur'] = $data['idUtilisateur'];
         $_SESSION['pseudo'] = $data['pseudo'];
+		$_SESSION['admin'] = $data['admin'];
+		
     }
 
     public static function deconnexion(){
@@ -58,7 +60,7 @@ class ModelUtilisateur extends Model {
     }
 
 
-    public static function inscription($data) {
+   /* public static function inscription($data) {
         if(!(ModelUtilisateur::checkAlreadyExist($data))) {
             try {
                 $data['pwd'] = hash('sha256',$data['pwd'].Config::getSeed());
@@ -73,7 +75,7 @@ class ModelUtilisateur extends Model {
             $messageErreur="Pseudo ou email déjà existant";
         }
     }
-
+*/
 }
 
 ?>
