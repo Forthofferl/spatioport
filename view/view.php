@@ -6,12 +6,12 @@
         <title>Spatioport - <?php if (isset($pagetitle)) echo "$pagetitle"; else echo "Erreur" ?></title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!--<link href="<?= VIEW_PATH_BASE; ?>css/bootstrap.min.css" rel="stylesheet">
+        <link href="<?= VIEW_PATH_BASE; ?>css/bootstrap.min.css" rel="stylesheet">
         <link href="<?= VIEW_PATH_BASE; ?>css/font-awesome.min.css" rel="stylesheet">
         <link href="<?= VIEW_PATH_BASE; ?>css/jquery.smartmenus.bootstrap.css" rel="stylesheet">
         <link href="<?= VIEW_PATH_BASE; ?>css/strength-meter.min.css" rel="stylesheet">
         <link href="<?= VIEW_PATH_BASE; ?>css/bootstrap-tabs-x.min.css" rel="stylesheet">
-        <link href="<?= VIEW_PATH_BASE; ?>css/style.css" rel="stylesheet">-->
+        <link href="<?= VIEW_PATH_BASE; ?>css/style.css" rel="stylesheet">
     </head>
 	<body>
         <!-- Menu -->
@@ -29,8 +29,8 @@
 								
 							if(estConnecte()){
 							
-								$t = estAdmin();
-								var_Dump($t);
+								//$t = estAdmin();
+								//var_Dump($t);
 									if(estAdmin()){ 
 										include_once VIEW_PATH . 'menu' . DS . 'viewMenuAdmin.php';
 									}else{

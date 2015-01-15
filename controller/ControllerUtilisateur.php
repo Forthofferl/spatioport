@@ -66,10 +66,11 @@ switch ($action) {
                 "pseudo" => $_POST['pseudo'],
                 "pwd" => hash('sha256',$_POST['pwd'].Conf::getSeed()),
                 );
-			
-				var_dump($data);
+				//$pwd=$_POST['pwd'];
+				//var_dump($pwd);
+				//var_dump($data);
                 $user = ModelUtilisateur::selectWhere($data);
-				var_dump($user);
+				//var_dump($user);
                 if($user != null) {
                   
                     $data2 = array(
@@ -79,7 +80,7 @@ switch ($action) {
 					
                     );
                     ModelUtilisateur::connexion($data2);
-					var_dump($_SESSION);
+					//var_dump($data2);
                     /*if(isset($_POST['redirurl'])) $url = $_POST['redirurl'];
                     else{$url = ".";}
                     header("Location:$url");*/
@@ -181,7 +182,7 @@ switch ($action) {
         $label = "Créer";
         $pseudo_status = "required";
         $pagetitle = "Création d'un utilisateur";
-	
+		
         $submit = "Création";
         $view = "create";
         $act="save";
