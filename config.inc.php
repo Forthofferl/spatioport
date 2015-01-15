@@ -20,7 +20,7 @@ function estConnecte() {
 }
 
 function estAdmin() {
-	return (! empty ( $_SESSION ['admin ']) && $_SESSION ['admin ']) ;
+	return (! empty ( $_SESSION ['admin ']) && $_SESSION ['admin ']=='1') ;
 }
 
 ?>
