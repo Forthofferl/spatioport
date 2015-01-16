@@ -50,10 +50,11 @@ class Model {
             $primary = static::$primary_index;
             $sql = "SELECT * FROM $table WHERE $table.$primary = :$primary";
             // Preparation de la requete
-            $req = self::$pdo->prepare($sql);
-            // execution de la requete
+			$req = self::$pdo->prepare($sql);
+			// execution de la requete
             $req->execute($data);
-
+			
+			
             if ($req->rowCount() != 0)
                 return $req->fetch(PDO::FETCH_OBJ);
             return null;  // Optionel : si return est omis, Php envoie null dans tous les cas
@@ -62,6 +63,8 @@ class Model {
             die("Erreur lors de la recherche dans la BDD " . static::$table);
         }
     }
+	
+	
 
     public static function selectWhere($data) {
         try {
