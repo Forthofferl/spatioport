@@ -189,6 +189,19 @@ class Model {
       }
     }
 	
+	public static function suppression($data) {
+      try {
+        $table = static::$table;
+        $primary = static::$primary_index;
+        $sql = "DELETE FROM $table WHERE $table.$primary = :$primary";
+        $req = self::$pdo->prepare($sql);
+        return $req->execute($data);
+      } catch (PDOException $e) {
+        echo $e->getMessage();
+        die("Erreur lors de la suppression dans la BDD " . static::$table);
+      }
+    }
+	
 
 }
 

@@ -66,6 +66,7 @@ switch ($action) {
 			$controller="admin";
 			$pagetitle="Informations sur le profil";
 			$_SESSION['pseudoUtil']=$u[0]->pseudo;
+			$_SESSION['idUtil']=$u[0]->idUtilisateur;
 			}
 		}
 		else{
@@ -84,7 +85,7 @@ switch ($action) {
         $data = array("pseudo" => $_SESSION['pseudoUtil']);
         $u = ModelUtilisateur::selectWhere($data);
         // Initialisation des variables pour la vue
-		$_SESSION['idUtil']=$u[0]->idUtilisateur;
+		
 		$ps=$u[0]->pseudo;
         $a = $u[0]->age;
         $n = $u[0]->nom;
@@ -141,6 +142,44 @@ switch ($action) {
         $view = "updated";
         $pagetitle = "Mise à jour";
         break;
-		
+		case "delete":
+            if(estConnecte()&&estAdmin()){
+                $view="delete";
+                $pagetitle="Confirmation suppression de votre compte";
+            }
+            else{
+              $view="error";
+			  $pagetitle="Erreur";
+			  $messageErreur="Vous devez être connecté en tant qu'administrateur pour pouvoir accéder à cette partie.";
+            }
+        break;
+
+        case "deleted":
+            if(estConnecte()&&estAdmin()){
+              $data = array(
+                "idUtilisateur" => $_SESSION["idUtil"],
+              );
+              ModelUtilisateur::suppression($data);
+              $dataWaiting = array(
+                "idUtilisateur" => $_SESSION["idUtil"]
+              );
+              $attente = ModelUtilisateur::selectWhere($dataWaiting);
+              if($attente != null) { // on est en recherche d'un adversaire ?
+                $dataDel = array(
+                  "idUtilisateur" => $_SESSION["idUtil"]
+                );
+                ModelUtilisateur::suppressionWhere($dataDel);
+              }
+              
+              $view="deleted";
+              $pagetitle="Profil supprimé !";
+              }
+            else{
+              $view="error";
+			  $pagetitle="Erreur";
+			  $messageErreur="Vous devez être connecté en tant qu'administrateur pour pouvoir accéder à cette partie.";
+            }
+        break;
+
 }
 require VIEW_PATH . "view.php";
