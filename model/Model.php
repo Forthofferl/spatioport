@@ -50,10 +50,11 @@ class Model {
             $primary = static::$primary_index;
             $sql = "SELECT * FROM $table WHERE $table.$primary = :$primary";
             // Preparation de la requete
-            $req = self::$pdo->prepare($sql);
-            // execution de la requete
+			$req = self::$pdo->prepare($sql);
+			// execution de la requete
             $req->execute($data);
-
+			
+			
             if ($req->rowCount() != 0)
                 return $req->fetch(PDO::FETCH_OBJ);
             return null;  // Optionel : si return est omis, Php envoie null dans tous les cas
@@ -62,6 +63,8 @@ class Model {
             die("Erreur lors de la recherche dans la BDD " . static::$table);
         }
     }
+	
+	
 
     public static function selectWhere($data) {
         try {
@@ -129,7 +132,35 @@ class Model {
             foreach ($data as $key => $value)
                 $update .= "$key=:$key, ";
             $update = rtrim($update, ', ');
+		
             $sql = "UPDATE $table SET $update WHERE $primary=:$primary";           
+          
+            // Preparation de la requete
+            $req = self::$pdo->prepare($sql);
+			
+			
+            // execution de la requete
+            return $req->execute($data);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die("Erreur lors de la mise à jour dans la BDD " . static::$table);
+        }
+    }
+	
+	public static function updateUtilAdmin($data) {
+        try {
+            $table = static::$table;
+            $primary = static::$primary_index;
+                    
+            $update = "";
+            foreach ($data as $key => $value)
+                $update .= "$key=:$key, ";
+            $update = rtrim($update, ', ');
+			
+			$id=$_SESSION['idUtil'];
+			
+            $sql = "UPDATE $table SET $update WHERE $primary=$id";   
+			
             
             // Preparation de la requete
             $req = self::$pdo->prepare($sql);
@@ -140,6 +171,7 @@ class Model {
             die("Erreur lors de la mise à jour dans la BDD " . static::$table);
         }
     }
+	
 	public static function suppressionWhere($data) {
       try {
         $table = static::$table;
@@ -149,6 +181,19 @@ class Model {
         $where .= " $table.$key=:$key AND";
         $where = rtrim($where, 'AND');
         $sql = "DELETE FROM $table WHERE $where";
+        $req = self::$pdo->prepare($sql);
+        return $req->execute($data);
+      } catch (PDOException $e) {
+        echo $e->getMessage();
+        die("Erreur lors de la suppression dans la BDD " . static::$table);
+      }
+    }
+	
+	public static function suppression($data) {
+      try {
+        $table = static::$table;
+        $primary = static::$primary_index;
+        $sql = "DELETE FROM $table WHERE $table.$primary = :$primary";
         $req = self::$pdo->prepare($sql);
         return $req->execute($data);
       } catch (PDOException $e) {
