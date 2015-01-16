@@ -1,2 +1,1 @@
-        <p> Le vaisseau a bien été créé sous le numéro <?php echo $i; ?>. </p>
-<?php require 'viewListVaisseau.php'; ?>
+        <p> Le vaisseau <?php echo $nom; ?> a bien été enregistré!   </p>

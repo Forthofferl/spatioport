@@ -89,38 +89,49 @@ switch ($action) {
         break;
 
     case "create":
-        $hidden_id = "";
-        $c = "";
-        $d = "";
-        $a = "";
-        $p = "";
-        $n = "";
-        $label = "Créer";
-        $pagetitle = "Création d'un Vaisseau";
-        $submit = "Création";
-        $act = "save";
-        $view = "create";
+		if(estConnecte()&&estAdmin()){
+			$hidden_id = "";
+			$v = "";
+			
+			$d = "";
+			$p = "";
+			$n = "";
+			$label = "Enregister";
+			$pagetitle = "Création d'un Vaisseau";
+			$submit = "Création";
+			$act = "save";
+			$view = "create";
+		}
+		else{
+              $view="error";
+			  $pagetitle="Erreur";
+			  $messageErreur="Vous devez être connecté en tant qu'administrateur pour pouvoir accéder à cette partie.";
+            }
         break;
 
     case "save":
-        if (!(is_null(myGet('nomVaisseau')) || is_null(myGet('prixVaisseau')) || is_null(myGet('nbrEnStock')) 
+        if (!(is_null(myGet('nomVaisseau')) || is_null(myGet('prixVaisseau')) || is_null(myGet('nbrEnStock')) || is_null(myGet('categorie')) 
                 || is_null(myGet('descripVaisseau')))) {
             $view = "error";
             $pagetitle = "Erreur";
+			$messageErreur = "L'un des champs est null";
             break;
         }
         $data = array(
             "nomVaisseau" => myGet("nomVaisseau"),
-            "prixVaisseau" => myGet("prixVaisseau"),
-            "nbrEnStock" => myGet("nbrEnStock"),
-            "descripVaisseau" => myGet("descripVaisseau")
+            "prixVaisseau" => myGet("prix"),
+			"categorie" => myGet("categorie"),
+            "nbrEnStock" => myGet("nbrStock"),
+            "descripVaisseau" => myGet("description")
+			
         );
-        $i = ModelVaisseau::insertAndGetId($data);
+		var_dump($data);
+        ModelVaisseau::insert($data);
         // Initialisation des variables pour la vue
-        $tab_Vaisseaus = ModelVaisseau::selectAll();
+        $nom=$data['nomVaisseau'];
         // Chargement de la vue
         $view = "created";
-        $pagetitle = "Liste des Vaisseaus";
+        $pagetitle = "Ajout réussit";
         break;
 
     case "updated":

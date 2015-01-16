@@ -180,6 +180,62 @@ switch ($action) {
 			  $messageErreur="Vous devez être connecté en tant qu'administrateur pour pouvoir accéder à cette partie.";
             }
         break;
+		
+		
+	/*case "gestionU":
+	
+		if(estConnecte()&&estAdmin()){
+		$view="search";
+		$pagetitle="Gestion d'un vaisseau";
+		
+		}
+		else{
+		$view="error";
+		$pagetitle="Erreur!";
+		$messageErreur="Vous devez être connecté en tant qu'administrateur pour pouvoir accéder à cette partie du site!";
+            break;
+		}
+		break;
+		
+	case "searchV":
+	
+		if(estConnecte()&&estAdmin()){
+			if (!isset($_POST['nomVaisseau'])) {
+            $view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Ce pseudo n'appartient à aucun utilisateur";
+            break;
+			}
+        
+			$data=array("nomVaisseau"=>$_POST['nomVaisseau']);
+			
+			
+			$u=ModelVaisseau::selectWhere($data);
+			
+			
+			if(count($u)==null){
+			$view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Ce nom n'appartient à aucun vaisseau";
+            break;
+			}
+			else{
+			$view="gestionVais";
+			$controller="admin";
+			$pagetitle="Informations sur le profil";
+			$_SESSION['pseudoVais']=$u[0]->nomVaisseau;
+			$_SESSION['idVais']=$u[0]->idVaisseau;
+			}
+		}
+		else{
+			$view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Vous devez être connecté en tant qu'administrateur pour accéder à cette partie du site!";
+            
+		}
+	
+	
+	break;*/
 
 }
 require VIEW_PATH . "view.php";
