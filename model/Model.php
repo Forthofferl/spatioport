@@ -133,7 +133,9 @@ class Model {
                 $update .= "$key=:$key, ";
             $update = rtrim($update, ', ');
 		
-            $sql = "UPDATE $table SET $update WHERE $primary=:$primary";           
+            $id=$_SESSION['idUtilisateur'];
+			
+            $sql = "UPDATE $table SET $update WHERE $primary=$id";            
           
             // Preparation de la requete
             $req = self::$pdo->prepare($sql);
@@ -199,6 +201,24 @@ class Model {
       } catch (PDOException $e) {
         echo $e->getMessage();
         die("Erreur lors de la suppression dans la BDD " . static::$table);
+      }
+    }
+	
+	public static function selectWhereOr($data) {
+      try {
+        $table = static::$table;
+        $primary = static::$primary_index;
+        $where = "";
+        foreach ($data as $key => $value)
+        $where .= " $table.$key=:$key OR";
+        $where = rtrim($where, 'OR');
+        $sql = "SELECT * FROM $table WHERE $where";
+        $req = self::$pdo->prepare($sql);
+        $req->execute($data);
+        return $req->fetchAll(PDO::FETCH_OBJ);
+      } catch (PDOException $e) {
+        echo $e->getMessage();
+        die("Erreur lors de la recherche dans la BDD " . static::$table);
       }
     }
 	

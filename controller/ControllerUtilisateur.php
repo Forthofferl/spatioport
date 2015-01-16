@@ -6,47 +6,9 @@ $controller="Utilisateur";
 require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';
 require_once MODEL_PATH . 'Model.php';
 
+
 switch ($action) {
-    case "read":
-        if (!is_null(myGet('login'))) {
-            $view = "error";
-            $pagetitle = "Erreur";
-            break;
-        }
-        // Initialisation des variables pour la vue        
-        $data = array("login" => myGet('login'));
-        $u = ModelUtilisateur::select($data);
-        // Chargement de la vue
-        if (is_null($u)) {
-            $view = "error";
-            $pagetitle = "Erreur";
-        } else {
-            $view = "find";
-            $pagetitle = "Détail d'un utilisateur";
-        }
-        break;
-
-
-    case "update":
-        if (!is_null(myGet('login'))) {
-            $view = "error";
-            $pagetitle = "Erreur";
-            break;
-        }
-        $data = array("login" => myGet('login'));
-        $u = ModelUtilisateur::select($data);
-        // Initialisation des variables pour la vue        
-        $l = $u->login;
-        $n = $u->nom;
-        $p = $u->prenom;
-        $e = $u->email;
-        $pagetitle = "Mise à jour d'un utilisateur";
-        $label = "Modifier";
-        $login_status = "readonly";
-        $submit = "Mise à jour";
-        $act = "updated";
-        $view = "create";
-        break;
+        
 
     case "connect":
 		
@@ -144,28 +106,161 @@ switch ($action) {
         $pagetitle = "Créer";
         break;
 
-    case "updated":
-        if (is_null(myGet('login') || is_null(myGet('nom')) || is_null(myGet('prenom')) || is_null(myGet('email')))) {
-            $view = "created";
-            $pagetitle = "Erreur";
-            break;
-        }
-        $data = array(
-            "login" => myGet("login"),
-            "nom" => myGet("nom"),
-            "prenom" => myGet("prenom"),
-            "email" => myGet("email")
-        );
-        ModelUtilisateur::update($data);
+   case "update":
+	if(estConnecte()){
+        
+        $data = array("pseudo" => $_SESSION['pseudo']);
+        $u = ModelUtilisateur::selectWhere($data);
         // Initialisation des variables pour la vue
-        $login = myGet('login');
-        $tab_util = ModelUtilisateur::selectAll();
-        // Chargement de la vue
-        $view = "updated";
-        $pagetitle = "Liste des utilisateurs";
-        break;
-	
 		
+		$ps=$u[0]->pseudo;
+        $a = $u[0]->age;
+        $n = $u[0]->nom;
+        $p = $u[0]->prenom;
+        $e = $u[0]->email;
+		$t = $u[0]->numtel;
+		$adr = $u[0]->adr;
+		
+        $pagetitle = "Mise à jour d'un utilisateur";
+        $label = "Mise à jour ";
+        $pseudo_status = "readonly";
+        $submit = "Mise à jour";
+        $act = "updated";
+        $view = "update";
+		
+	}
+	else{
+	$view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Vous devez être connecté pour pouvoir accéder à cette partie.";
+            
+	}
+    break;
+		
+	case "updated":
+            if(estConnecte()){
+              if (empty($_POST)) {
+                  header('Location: utilisateur.php?action=update');
+                  break;
+              }
+              else {
+                $data = array(
+                  "idUtilisateur" => $_SESSION["idUtilisateur"],
+                  "pseudo" => $_POST["pseudo"],
+                  "age" => $_POST["age"],
+                  "email" => $_POST["email"],
+				  "adr"=>$_POST["adr"],
+				  "numtel"=>$_POST["numtel"],
+				  "nom"=>$_POST["nom"],
+				  "prenom"=>$_POST["prenom"]
+				  
+                );
+                if(!empty($_POST["pwd"])){
+                  $data['pwd']=hash('sha256',$_POST["pwd"].Conf::getSeed());
+                }
+                $dataCheck = array(
+                  "pseudo" => $_POST["pseudo"],
+                  "email" => $_POST["email"]
+                );
+                $existe = ModelUtilisateur::selectWhereOr($dataCheck);
+                if ($existe != null && $existe[0]->idUtilisateur!=$_SESSION['idUtilisateur']) {
+                  $messageErreur="Ce pseudo ou cet e-mail est déjà utilisé !";
+                  break;
+                }
+    			      else {
+                    $r = ModelUtilisateur::update($data);
+                    $_SESSION['pseudo'] = $_POST["pseudo"];
+					$pseudo=$_SESSION['pseudo'];
+                    $view="updated";
+                    $pagetitle='Profil mis à jour !';
+                }
+              }
+            }
+            
+			else {
+				$view="error";
+				$pagetitle="Erreur";
+				$messageErreur="Il semblerait que vous ayez trouvé un glitch dans le système !";
+			  }
+        break;
+
+		case "delete":
+            if(estConnecte()){
+                $view="delete";
+                $pagetitle="Confirmation suppression de votre compte";
+            }
+            else{
+              $view="error";
+				$pagetitle="Erreur";
+				$messageErreur="Vous devez être connecter pour accéder à cette partie du site!";
+            }
+        break;
+
+        case "deleted":
+            if(estConnecte()){
+              $data = array(
+                "idUtilisateur" => $_SESSION['idUtilisateur'],
+              );
+              ModelUtilisateur::suppression($data);
+              $dataWaiting = array(
+                "idUtilisateur" => $_SESSION['idUtilisateur']
+              );
+              $attente = ModelUtilisateur::selectWhere($dataWaiting);
+              if($attente != null) { // on est en recherche d'un adversaire ?
+                $dataDel = array(
+                  "idUtilisateur" => $_SESSION['idUtilisateur']
+                );
+                ModelUtilisateur::suppressionWhere($dataDel);
+              }
+              ModelUtilisateur::deconnexion();
+              $view="deleted";
+              $pagetitle="Profil supprimé !";
+            }
+            else{
+              $view="error";
+				$pagetitle="Erreur";
+				$messageErreur="Vous devez être connecter pour accéder à cette partie du site!";
+            }
+        break;
+		
+		case "profil":
+	
+		if(estConnecte()){
+			if (!isset($_SESSION['pseudo'])) {
+            $view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Vous devez être connecté pour accéder à cette partie du site!";
+            break;
+			}
+        
+			$data=array("pseudo"=>$_SESSION['pseudo']);
+			
+			
+			$u=ModelUtilisateur::selectWhere($data);
+			
+			
+			if(count($u)==null){
+			$view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Vous devez être connecté pour accéder à cette partie du site!";
+            break;
+			}
+			else{
+			$view="profil";
+			$controller="utilisateur";
+			$pagetitle="Informations sur le profil";
+			
+			}
+		}
+		else{
+			$view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Vous devez être connecté pour accéder à cette partie du site!";
+            
+		}
+	
+	
+	break;
 
 	
 		
@@ -187,7 +282,13 @@ switch ($action) {
         $view = "create";
         $act="save";
 		break;
-	default:
+		
+	default :
+			$view="error";
+			$pagetitle="Erreur";
+            $messageErreur="Il semblerait que vous ayez trouvé un glitch dans le système !";
+
+        
 	
 	
 }

@@ -1,2 +1,1 @@
-        <p> L'utilisateur <?php echo $login ?> a bien été mis à jour </p>
-<?php require 'viewListUtilisateur.php'; ?>
+<h2> L'utilisateur <?php echo $pseudo ?> a bien été mis à jour </h2>
