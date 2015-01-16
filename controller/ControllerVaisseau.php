@@ -132,7 +132,7 @@ switch ($action) {
 		case "delete":
             if(estConnecte()&&estAdmin()){
                 $view="delete";
-                $pagetitle="Confirmation suppression de votre compte";
+                $pagetitle="Confirmation suppression du vaisseau";
             }
             else{
               $view="error";
@@ -190,23 +190,32 @@ switch ($action) {
 
     
 
-    case "delete":
-        if (!is_null(myGet('id'))) {
+    case "deleted":
+        if (is_null($_SESSION['idVais'])){
+			
             $view = "error";
             $pagetitle = "Erreur";
-            break;
+			$messageErreur="Erreur!";
+			break;            
         }
-        $data = array("id" => myGet('id'));
+		if(estConnecte()&&estAdmin()){
+        $data = array("idVaisseau" => $_SESSION['idVais']);
         $t = ModelVaisseau::delete($data);
         // Initialisation des variables pour la vue
-        $i = myGet('id');
-        $tab_Vaisseaus = ModelVaisseau::selectAll();
+        $i = $_SESSION['nomVaisseau'];
+        
         // Chargement de la vue
         $view = "deleted";
-        $pagetitle = "Liste des Vaisseaus";
+        $pagetitle = "Vaisseau supprimé!";
+		}
+		else{
+              $view="error";
+			  $pagetitle="Erreur";
+			  $messageErreur="Vous devez être connecté en tant qu'administrateur pour pouvoir accéder à cette partie.";
+            }
         break;
 
-    default:
+    
     // Si l'action est inconnue, nous effectuerons 'readAll'
 
     case "readAll":
@@ -235,14 +244,18 @@ switch ($action) {
         $data = array("nomVaisseau" => $_POST['nomVaisseau']);
 		$_SESSION['nomVaisseau']=$_POST['nomVaisseau'];
         $u = ModelVaisseau::selectWhere($data);
+		
+		
         // Chargement de la vue
-        if (is_null($u)) {
+        if ($u==null) {
             $view = "error";
             $pagetitle = "Erreur";
+			$messageErreur="Il n'existe aucun vaisseau de ce nom";
         } else {
 			if(estConnecte()&&estAdmin()){
             $view = "searchedA";
             $pagetitle = "Détail d'un vaisseau";
+			$_SESSION['idVais']=$u[0]->idVaisseau;
 			break;
 			}
 			elseif(estConnecte()){
@@ -258,6 +271,11 @@ switch ($action) {
        
 		
         break;
+		default:
+		
+		$view="error";
+		$pagetitle="Erreur!";
+		$messageErreur="Glitch in the system";
 	
 	
 		
