@@ -53,7 +53,8 @@ switch ($action) {
 			
 			
 			$u=ModelUtilisateur::selectWhere($data);
-		
+			
+			
 			if(count($u)==null){
 			$view = "error";
             $pagetitle = "Erreur";
@@ -64,17 +65,82 @@ switch ($action) {
 			$view="gestionUtil";
 			$controller="admin";
 			$pagetitle="Informations sur le profil";
+			$_SESSION['pseudoUtil']=$u[0]->pseudo;
 			}
 		}
 		else{
 			$view = "error";
             $pagetitle = "Erreur";
 			$messageErreur="Vous devez être connecté en tant qu'administrateur pour accéder à cette partie du site!";
-            break;
+            
 		}
 	
 	
 	break;
+	
+	case "update":
+	if(estConnecte()&&estAdmin()){
+        
+        $data = array("pseudo" => $_SESSION['pseudoUtil']);
+        $u = ModelUtilisateur::selectWhere($data);
+        // Initialisation des variables pour la vue
+		$_SESSION['idUtil']=$u[0]->idUtilisateur;
+		$ps=$u[0]->pseudo;
+        $a = $u[0]->age;
+        $n = $u[0]->nom;
+        $p = $u[0]->prenom;
+        $e = $u[0]->email;
+		$t = $u[0]->numtel;
+		$adr = $u[0]->adr;
+        $pagetitle = "Mise à jour d'un utilisateur";
+        $label = "Modifier";
+        $pseudo_status = "readonly";
+        $submit = "Mise à jour";
+        $act = "updated";
+        $view = "update";
+		
+	}
+	else{
+	$view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Vous devez être connecté en tant qu'administrateur pour pouvoir accéder à cette partie.";
+            
+	}
+    break;
+		
+	case "updated":
+        if (is_null(myGet('pseudo') || is_null(myGet('prenom')) || is_null(myGet('nom')) 
+                || is_null(myGet('age')) || is_null(myGet('adr')) || is_null(myGet('pwd')) || is_null(myGet('pwd2')) || is_null(myGet('email')) || is_null(myGet('numtel')))) {
+            $view = "error";
+            $pagetitle = "Erreur";
+            break;
+        }
+        if((myGet('mdp'))!=(myGet('mdp2'))){
+            $view = "error";
+            $pagetile ="Erreur";
+			$messageErreur="Les deux mots de passe ne sont pas identiques";
+            break;
+        }
+		
+        $data = array(
+            "pseudo" => $_SESSION['pseudoUtil'],
+            "nom" => myGet("nom"),
+            "prenom" => myGet("prenom"),
+            "email" => myGet("email"),
+			"adr" => myGet("adr"),
+			"age" => myGet("age"),
+			"numtel" => myGet("numtel"),
+            "pwd" => hash('sha256',myGet("pwd") . Conf::getSeed())
+        );
+		
+        ModelUtilisateur::updateUtilAdmin($data);
+        // Initialisation des variables pour la vue
+        $pseudo = myGet('pseudo');
+        
+        // Chargement de la vue
+        $view = "updated";
+        $pagetitle = "Mise à jour";
+        break;
 		
 }
 require VIEW_PATH . "view.php";

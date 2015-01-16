@@ -29,6 +29,9 @@ switch ($controller) {
     case "vaisseau":
         require_once "ControllerVaisseau.php";
         break;
+	case "admin":
+        require_once "ControllerAdmin.php";
+        break;
 
     default:
 }
