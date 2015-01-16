@@ -174,35 +174,31 @@ switch ($action) {
         $pagetitle = "Liste des Vaisseaus";
         break;
 		
-	 case "search":
-      
-        $nV = "";
-        $p="";
-        $c="";
-      
-        $submit = "Rechercher";
-        $view = "search";
+	case "search":
+
+		$view = "search";
 		$pagetitle="Recherche";
+		
 		break;
+
 		
-	case "searched";
-		 // Initialisation des variables pour la vue        
-		
-		$data = array(
-                "nomVaisseau" => $_POST['nomVaisseau'],
-                "prix" => $_POST['prix'],
-                );
-        $t = ModelVaisseau::select($data);
+	case "searched":
+ 
+        $data = array("nomVaisseau" => $_POST['nomVaisseau']);
+        $u = ModelVaisseau::select($data);
         // Chargement de la vue
-        if (is_null($t)) {
+        if (is_null($u)) {
             $view = "error";
             $pagetitle = "Erreur";
         } else {
-
+            $view = "find";
+            $pagetitle = "Détail d'un vaisseau";
         }
+       
+		
         break;
 	
-	break;
+	
 		
 }
 require VIEW_PATH . "view.php";

@@ -1,18 +1,19 @@
 <?php
 
-function view1($t) {
-   $i = $t->id;
-   $v = $t->nomVaisseau;
-   $p = $t->prix;
-   $n = $t->nbStock;
-   $d = $t->description;
+function view1($u) {
+
+   $i = $u->idVaisseau;
+   $v = $u->nomVaisseau;
+   $p = $u->prixVaisseau;
+   $n = $u->nbrEnStock;
+   $d = $u->descripVaisseau;
 
     // La syntaxe suivante permet de créer facilement des chaînes de caractères multi-lignes
     echo <<< EOT
-        <li> Le $v coute $t et il y en a $n à $p.
+        <li> Le $v coute $p et il y en a $n.
 			Description:
 			$d
-            <a href='?action=read&controller=vaisseau&id=$i'> Détails </a>
+            /*<a href='?action=read&controller=vaisseau&id=$i'> Détails </a>*/
         </li>
 EOT;
 }
@@ -20,5 +21,5 @@ EOT;
 view1($t);
 ?>
         <p>
-            Retour à la <a href="?controller=trajet">page principale</a>.
+            Retour à la <a href="?controller=utilisateur">page principale</a>.
         </p>
