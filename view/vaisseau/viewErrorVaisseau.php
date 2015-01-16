@@ -1,5 +1,5 @@
         <?php
-        echo "<p>Désolé, nous avons rencontré une erreur avec le vaisseau.</p>";
+        echo $messageErreur;
         ?>
         <p>
             Retour à la <a href="?">page principale</a>.

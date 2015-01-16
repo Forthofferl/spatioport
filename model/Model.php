@@ -174,6 +174,31 @@ class Model {
         }
     }
 	
+	public static function updateVaisAdmin($data) {
+        try {
+            $table = static::$table;
+            $primary = static::$primary_index;
+                    
+            $update = "";
+            foreach ($data as $key => $value)
+                $update .= "$key=:$key, ";
+            $update = rtrim($update, ', ');
+			
+			$id=$_SESSION['idVais'];
+			
+            $sql = "UPDATE $table SET $update WHERE $primary=$id";   
+			
+            
+            // Preparation de la requete
+            $req = self::$pdo->prepare($sql);
+            // execution de la requete
+            return $req->execute($data);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die("Erreur lors de la mise à jour dans la BDD " . static::$table);
+        }
+    }
+	
 	public static function suppressionWhere($data) {
       try {
         $table = static::$table;

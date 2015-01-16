@@ -3,7 +3,7 @@ echo <<< EOT
         <form method="post" action="." onsubmit="check()">
             <fieldset>
                 <legend>$label un vaisseau</legend>
-                $hidden_id
+                
                 <p>
                     <label for="id_nomVaisseau">Nom du Vaisseau</label> :
                     <input type="text" value="$v" name="nomVaisseau" id="id_nomVaisseau" required/>
@@ -21,12 +21,12 @@ echo <<< EOT
                     Description:
 					</b>
 				</p>
-                    <textarea value="$d" name="description" rows="3" cols="60" required/></textarea>
+                    <textarea name="description" rows="3" cols="60" required/>$d</textarea>
                 
 				<p>
 					<label for="id_categorie">Catégorie</label> :
 					<select name="categorie" id="categorie">
-						<option selected="selected" value="selection de categorie">selectionné une catégorie</option>
+						<option selected="selected" value="selection de categorie">selectionnez une catégorie</option>
 						<option value="chasseur">chasseur</option>
 						<option value="bombardier">bombardier</option>
 						<option value="fregate">frégate</option>

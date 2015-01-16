@@ -66,27 +66,81 @@ switch ($action) {
         break;
         
     case "update":
-        if (!is_null(myGet('id'))) {
-            $view = "error";
+	if(estConnecte()&&estAdmin()){
+        
+        $data = array("nomVaisseau" => $_SESSION['nomVaisseau']);
+        $u = ModelVaisseau::selectWhere($data);
+        // Initialisation des variables pour la vue
+			
+			$_SESSION['idVais']=$u[0]->idVaisseau;
+			$v = $u[0]->nomVaisseau;
+			$d = $u[0]->descripVaisseau;
+			$p = $u[0]->prixVaisseau;
+			$n = $u[0]->nbrEnStock;
+			$_SESSION['categorie']=$u[0]->categorie;
+			$label = "Mise à jour d'";
+			$pagetitle = "Mis à jour d'un Vaisseau";
+			$submit = "Mettre à jour";
+			$pseudo_status = "readonly";
+			$act = "updated";
+			$view = "create";
+		
+		
+	}
+	else{
+	$view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Vous devez être connecté en tant qu'administrateur pour pouvoir accéder à cette partie.";
+            
+	}
+    break;
+		
+	case "updated":
+        if (!(is_null(myGet('nomVaisseau')) || is_null(myGet('prixVaisseau')) || is_null(myGet('nbrEnStock')) || is_null(myGet('categorie')) 
+                || is_null(myGet('descripVaisseau')))) {
+			$view = "error";
             $pagetitle = "Erreur";
             break;
         }
-        $data = array("id" => myGet('id'));
-        $t = ModelVaisseau::select($data);
-        // Initialisation des variables pour la vue        
-        $i = $t->id;
-        $hidden_id = "<input type='hidden' name='id' value='$i' />"; //$t->id;
-        $c = $t->conducteur;
-        $d = $t->depart;
-        $a = $t->arrivee;
-        $p = $t->prix;
-        $n = $t->nbplaces;
-        $pagetitle = "Mise à jour d'un Vaisseau";
-        $label = "Modifier";
-        $submit = "Mise à jour";
-        $act = "updated";
-        $view = "create";
+        
+		if(estConnecte()&&estAdmin()){
+        $data = array(
+            "nomVaisseau" => myGet("nomVaisseau"),
+            "prixVaisseau" => myGet("prix"),
+			"categorie" => myGet("categorie"),
+            "nbrEnStock" => myGet("nbrStock"),
+            "descripVaisseau" => myGet("description")
+			
+        );
+		
+		$_SESSION['categorie']=$_POST['categorie'];
+        ModelVaisseau::updateVaisAdmin($data);
+        // Initialisation des variables pour la vue
+        $nom = myGet('nomVaisseau');
+        
+        // Chargement de la vue
+        $view = "updated";
+        $pagetitle = "Mise à jour";
+		}
+		else{
+              $view="error";
+			  $pagetitle="Erreur";
+			  $messageErreur="Vous devez être connecté en tant qu'administrateur pour pouvoir accéder à cette partie.";
+            }
         break;
+		
+		case "delete":
+            if(estConnecte()&&estAdmin()){
+                $view="delete";
+                $pagetitle="Confirmation suppression de votre compte";
+            }
+            else{
+              $view="error";
+			  $pagetitle="Erreur";
+			  $messageErreur="Vous devez être connecté en tant qu'administrateur pour pouvoir accéder à cette partie.";
+            }
+        break;
+
 
     case "create":
 		if(estConnecte()&&estAdmin()){
@@ -134,29 +188,7 @@ switch ($action) {
         $pagetitle = "Ajout réussit";
         break;
 
-    case "updated":
-        if (is_null(myGet('conducteur')) || is_null(myGet('depart')) || is_null(myGet('arrivee')) 
-                || is_null(myGet('prix')) || is_null(myGet('nbplaces'))) {
-            $view = "error";
-            $pagetitle = "Erreur";
-            break;
-        }
-        $data = array(
-            "id" => myGet("id"),
-            "conducteur" => myGet("conducteur"),
-            "depart" => myGet("depart"),
-            "arrivee" => myGet("arrivee"),
-            "prix" => myGet("prix"),
-            "nbplaces" => myGet("nbplaces")
-        );
-        ModelVaisseau::update($data);
-        // Initialisation des variables pour la vue
-        $i = myGet('id');
-        $tab_Vaisseaus = ModelVaisseau::selectAll();
-        // Chargement de la vue
-        $view = "updated";
-        $pagetitle = "Liste des Vaisseaus";
-        break;
+    
 
     case "delete":
         if (!is_null(myGet('id'))) {
@@ -186,24 +218,42 @@ switch ($action) {
         break;
 		
 	case "search":
-
+		if(estConnecte()){
 		$view = "search";
 		$pagetitle="Recherche";
-		
+		}
+		else{
+              $view="error";
+			  $pagetitle="Erreur";
+			  $messageErreur="Vous devez être connecté pour pouvoir accéder à cette partie.";
+            }
 		break;
 
 		
 	case "searched":
  
         $data = array("nomVaisseau" => $_POST['nomVaisseau']);
-        $u = ModelVaisseau::select($data);
+		$_SESSION['nomVaisseau']=$_POST['nomVaisseau'];
+        $u = ModelVaisseau::selectWhere($data);
         // Chargement de la vue
         if (is_null($u)) {
             $view = "error";
             $pagetitle = "Erreur";
         } else {
-            $view = "find";
+			if(estConnecte()&&estAdmin()){
+            $view = "searchedA";
             $pagetitle = "Détail d'un vaisseau";
+			break;
+			}
+			elseif(estConnecte()){
+				$view="searchedU";
+				$pagetitle="Détail d'un vaisseau";
+			}	
+			else{
+				$view="error";
+				$pagetitle="Erreur";
+				$messageErreur="Vous devez être connecté pour pouvoir accéder à cette partie.";
+            }
         }
        
 		
