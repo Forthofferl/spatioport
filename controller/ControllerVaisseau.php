@@ -1,9 +1,10 @@
 <?php
 
 require_once('config.inc.php');
-
+$controller="Vaisseau";
 // On va chercher le modele dans "./model/ModelVaisseau.php"
 require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';
+require_once MODEL_PATH . 'Model.php';
 
 switch ($action) {
     case "read":
@@ -172,5 +173,36 @@ switch ($action) {
         $view = "list";
         $pagetitle = "Liste des Vaisseaus";
         break;
+		
+	 case "search":
+      
+        $nV = "";
+        $p="";
+        $c="";
+      
+        $submit = "Rechercher";
+        $view = "search";
+		$pagetitle="Recherche";
+		break;
+		
+	case "searched";
+		 // Initialisation des variables pour la vue        
+		
+		$data = array(
+                "nomVaisseau" => $_POST['nomVaisseau'],
+                "prix" => $_POST['prix'],
+                );
+        $t = ModelVaisseau::select($data);
+        // Chargement de la vue
+        if (is_null($t)) {
+            $view = "error";
+            $pagetitle = "Erreur";
+        } else {
+
+        }
+        break;
+	
+	break;
+		
 }
 require VIEW_PATH . "view.php";
