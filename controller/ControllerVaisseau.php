@@ -8,21 +8,27 @@ require_once MODEL_PATH . 'Model.php';
 
 switch ($action) {
     case "read":
-        if (!is_null(myGet('id'))) {
+		
+        if (is_null($_GET['id'])) {
             $view = "error";
             $pagetitle = "Erreur";
+			$messageErreur="La recherche n'est pas valide!";
             break;
         }
         // Initialisation des variables pour la vue        
-        $data = array("id" => myGet('id'));
-        $t = ModelVaisseau::select($data);
+        $data = array("idVaisseau" => $_GET['id']);
+		
+		
+        $u = ModelVaisseau::selectWhere($data);
+		
         // Chargement de la vue
-        if (is_null($t)) {
+        if (is_null($u)) {
             $view = "error";
             $pagetitle = "Erreur";
+			$messageErreur="Ce vaisseau n'existe pas ou plus";
         } else {
-            $view = "find";
-            $pagetitle = "Détail d'un ";
+            $view = "searchedU";
+            $pagetitle = "Détail d'un vaisseau ";
         }
         break;
 
@@ -220,10 +226,28 @@ switch ($action) {
 
     case "readAll":
         // Initialisation des variables pour la vue
-        $tab_Vaisseaus = ModelVaisseau::selectAll();
-        // Chargement de la vue
-        $view = "list";
-        $pagetitle = "Liste des Vaisseaus";
+		if(estConnecte()){
+		$data= array("categorie" => $_GET['cat']);
+        $tab_vaisseau = ModelVaisseau::selectWhere($data);
+		
+			if(count($tab_vaisseau)!=null){
+			// Chargement de la vue
+			$view = "list";
+			$pagetitle = "Liste des Vaisseaux";
+			}
+			else{
+				$view="error";
+				$pagetitle="Erreur";
+				$messageErreur="Il n'y a aucun vaisseau à vendre dans cette catégorie";
+				break;
+			}
+			
+		}
+		else{
+            $view="error";
+			$pagetitle="Erreur";
+			$messageErreur="Vous devez être connecté pour pouvoir accéder à cette partie.";
+        }
         break;
 		
 	case "search":
@@ -242,8 +266,10 @@ switch ($action) {
 	case "searched":
  
         $data = array("nomVaisseau" => $_POST['nomVaisseau']);
+		
 		$_SESSION['nomVaisseau']=$_POST['nomVaisseau'];
         $u = ModelVaisseau::selectWhere($data);
+		
 		
 		
 		
@@ -269,12 +295,8 @@ switch ($action) {
 				$messageErreur="Vous devez être connecté pour pouvoir accéder à cette partie.";
             }
         }
-		case(dansPanier):
+		break;
 		
-		
-       
-		
-        break;
 		default:
 		
 		$view="error";

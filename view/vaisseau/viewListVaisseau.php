@@ -1,32 +1,29 @@
 <?php
-function view1($tab_traj) {
-    foreach ($tab_traj as $t) {
-        $i = $t->id;
+function view1($tab_vaisseau) {
+    foreach ($tab_vaisseau as $t) {
+        $i = $t->idVaisseau;
         $v = $t->nomVaisseau;
-        $p = $t->prix;
-        $n = $t->nbStock;
-        $d = $t->description;
-        
+        $p = $t->prixVaisseau;
+        $n = $t->nbrEnStock;
+		$d = $t->descripVaisseau;
+		
         // La syntaxe suivante permet de créer facilement des chaînes de caractères multi-lignes
         echo <<< EOT
-        <li> Le $v coute $t et il y en a $n à $p.
+		<li> Le $v coute $p crédit gallactique et il y en a $n.
 			Description:
 			$d
-            <a href='?action=read&controller=vaisseau&id=$i'> Détails </a>
-        </li>
+            <a href='vaisseau.php?action=read&id=$i'> Détails </a>
+        </li></br>
+		
+    
 EOT;
-    }
-   echo <<< EOT
-        <li> 
-            <a href='?action=create&controller=vaisseau'>Créer un nouveau vaisseau</a>
-        </li>
-EOT;
+	}
 }
 ?>
         <!-- Une variable $tab_util est donnée -->    
         <div>
-            <h1>Liste des vaisseaux:</h1>
-            <ol>
+            <h3>Liste des vaisseaux:</h3>
+            <ul>
             <?php view1($tab_vaisseau); ?>
-            </ol>
+            </ul>
         </div>

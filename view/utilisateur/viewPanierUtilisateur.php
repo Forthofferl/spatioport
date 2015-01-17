@@ -1,4 +1,4 @@
-<form method="post" action="panier.php">
+<form method="post" action=".">
 <table style="width: 400px">
 	<tr>
 		<td colspan="4">Votre panier</td>
