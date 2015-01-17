@@ -16,8 +16,14 @@ function view1($u) {
 			  <h3>Nombre en stock: $nbr</h3>
 			  <h3>Description: </h3>
 			  <h3>$d</h3>
-              
-	<p> <a href="utilisateur.php?action=dansPanier" class="btn btn-primary"><span class="fa fa-refresh"></span> Mettre dans le panier</a> </p>
+     <form method="post" action="utilisateur.php?action=dansPanier">
+	 <label>Quantité : </label>
+	<input type="text" name="quantite" style="border-radius:5px;" placeholder="quantite" size="10" \required></br>
+
+
+    <input type="submit" class="btn btn-primary" value="Mettre dans le panier" />
+	</form>
+	
     <p> <a href="vaisseau.php?action=search" class="btn btn-danger"><span class="fa fa-trash"></span> Revenir à la recherche</a> </p>
 EOT;
 }

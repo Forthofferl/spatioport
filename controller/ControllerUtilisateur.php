@@ -283,6 +283,41 @@ switch ($action) {
         $act="save";
 		break;
 		
+	case"dansPanier":
+	if(estConnecte()){
+		$data = array("nomVaisseau" => $_SESSION['nomVaisseau']);
+        $u = Model::selectWhereUtil($data);
+		Model::ajouterArticle($u[0]->nomVaisseau,$_POST["quantite"],$u[0]->prixVaisseau);
+		$view="ajoutPanier";
+		$pagetitle="Ajouté!";
+	}
+	else{
+			$view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Vous devez être connecté pour accéder à cette partie du site!";
+            
+		}
+	
+	break;
+	
+	case"panier":
+	
+	if(estConnecte()){
+		$view="panier";
+		$pagetitle="Panier";
+		$montantTotal=ModelUtilisateur::MontantGlobal();
+	}
+	else{
+			$view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Vous devez être connecté pour accéder à cette partie du site!";
+            
+		}
+	break;
+	
+	
+	
+		
 	default :
 			$view="error";
 			$pagetitle="Erreur";

@@ -11,8 +11,10 @@ define('CTR_PATH', ROOT.DS.'controller'.DS);
 define('VIEW_PATH_BASE', BASE.'view/');
 define('VIEW_PATH', ROOT . DS . 'view' . DS);
 define('MODEL_PATH', ROOT . DS . 'model' . DS);
-
+$data=array();
 session_start();
+//setcookie("comptPanier",0);
+//setcookie("panier",serialize($data));
 
 // vérifier si l'utilisateur est connecté
 function estConnecte() {

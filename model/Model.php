@@ -85,6 +85,26 @@ class Model {
             die("Erreur lors de la recherche dans la BDD " . static::$table);
         }
     }
+	
+	public static function selectWhereUtil($data) {
+        try {
+            $table = "vaisseau";
+            $primary = "idVaisseau";
+            $where = "";
+            foreach ($data as $key => $value)
+                $where .= " $table.$key=:$key AND";
+            $where = rtrim($where, 'AND');
+            $sql = "SELECT * FROM $table WHERE $where";
+            // Preparation de la requete
+            $req = self::$pdo->prepare($sql);
+            // execution de la requete
+            $req->execute($data);
+            return $req->fetchAll(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die("Erreur lors de la recherche dans la BDD " . static::$table);
+        }
+    }
     
     public static function delete($data) {
         try {
@@ -246,7 +266,84 @@ class Model {
         die("Erreur lors de la recherche dans la BDD " . static::$table);
       }
     }
+public static	function creationPanier(){
+	if (!isset($_SESSION['panier'])){
+		  $_SESSION['panier']=array();
+		  $_SESSION['panier']['nomVaisseau'] = array();
+		  $_SESSION['panier']['qte'] = array();
+		  $_SESSION['panier']['prixVaisseau'] = array();
+		  $_SESSION['panier']['verrou'] = false;
+	   }
+	return true;
+	}
 	
+public static function isVerrouille(){
+   if (isset($_SESSION['panier']) && $_SESSION['panier']['verrou'])
+   return true;
+   else
+   return false;
+}
+	
+public static	function ajouterArticle($nomVaisseau,$qte,$prixVaisseau){
+
+   //Si le panier existe
+   if (!Model::isVerrouille())
+   {
+      //Si le produit existe déjà on ajoute seulement la quantité
+      $positionProduit = array_search($nomVaisseau,  $_SESSION['panier']['nomVaisseau']);
+
+      if ($positionProduit !== false)
+      {
+         $_SESSION['panier']['qte'][$positionProduit] += $qte ;
+      }
+      else
+      {
+         //Sinon on ajoute le produit
+         array_push( $_SESSION['panier']['nomVaisseau'],$nomVaisseau);
+         array_push( $_SESSION['panier']['qte'],$qte);
+         array_push( $_SESSION['panier']['prixVaisseau'],$prixVaisseau);
+      }
+   }
+}
+
+public static function supprimerArticle($nomVaisseau){
+   //Si le panier existe
+   if (creationPanier() && !isVerrouille())
+   {
+      //Nous allons passer par un panier temporaire
+      $tmp=array();
+      $tmp['nomVaisseau'] = array();
+      $tmp['qte'] = array();
+      $tmp['prixVaisseau'] = array();
+      $tmp['verrou'] = $_SESSION['panier']['verrou'];
+
+      for($i = 0; $i < count($_SESSION['panier']['nomVaisseau']); $i++)
+      {
+         if ($_SESSION['panier']['nomVaisseau'][$i] !== $nomVaisseau)
+         {
+            array_push( $tmp['nomVaisseau'],$_SESSION['panier']['nomVaisseau'][$i]);
+            array_push( $tmp['qte'],$_SESSION['panier']['qte'][$i]);
+            array_push( $tmp['prixVaisseau'],$_SESSION['panier']['prixVaisseau'][$i]);
+         }
+
+      }
+      //On remplace le panier en session par notre panier temporaire à jour
+      $_SESSION['panier'] =  $tmp;
+      //On efface notre panier temporaire
+      unset($tmp);
+   }
+   else
+   echo "Un problème est survenu veuillez contacter l'administrateur du site.";
+}
+
+public static function MontantGlobal(){
+   $total=0;
+   for($i = 0; $i < count($_SESSION['panier']['nomVaisseau']); $i++)
+   {
+      $total += $_SESSION['panier']['qte'][$i] * $_SESSION['panier']['prixVaisseau'][$i];
+   }
+   return $total;
+}
 
 }
 

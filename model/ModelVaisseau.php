@@ -29,6 +29,8 @@ class ModelVaisseau extends Model {
             die("<br /> Erreur lors de l'insertion dans la BDD " . static::$table);
         }
     }
+	
+	
 
     /*public static function findUtilisateurs($data) {
         try {

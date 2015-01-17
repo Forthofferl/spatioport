@@ -246,6 +246,7 @@ switch ($action) {
         $u = ModelVaisseau::selectWhere($data);
 		
 		
+		
         // Chargement de la vue
         if ($u==null) {
             $view = "error";
@@ -268,6 +269,9 @@ switch ($action) {
 				$messageErreur="Vous devez être connecté pour pouvoir accéder à cette partie.";
             }
         }
+		case(dansPanier):
+		
+		
        
 		
         break;
