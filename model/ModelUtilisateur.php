@@ -77,6 +77,25 @@ class ModelUtilisateur extends Model {
         }
     }
 */
+	public static function selectWhereUtil($data) {
+        try {
+            $table = "vaisseau";
+            $primary = "idVaisseau";
+            $where = "";
+            foreach ($data as $key => $value)
+                $where .= " $table.$key=:$key AND";
+            $where = rtrim($where, 'AND');
+            $sql = "SELECT * FROM $table WHERE $where";
+            // Preparation de la requete
+            $req = self::$pdo->prepare($sql);
+            // execution de la requete
+            $req->execute($data);
+            return $req->fetchAll(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die("Erreur lors de la recherche dans la BDD " . static::$table);
+        }
+    }
 }
 
 ?>

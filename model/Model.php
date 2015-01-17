@@ -86,25 +86,7 @@ class Model {
         }
     }
 	
-	public static function selectWhereUtil($data) {
-        try {
-            $table = "vaisseau";
-            $primary = "idVaisseau";
-            $where = "";
-            foreach ($data as $key => $value)
-                $where .= " $table.$key=:$key AND";
-            $where = rtrim($where, 'AND');
-            $sql = "SELECT * FROM $table WHERE $where";
-            // Preparation de la requete
-            $req = self::$pdo->prepare($sql);
-            // execution de la requete
-            $req->execute($data);
-            return $req->fetchAll(PDO::FETCH_OBJ);
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-            die("Erreur lors de la recherche dans la BDD " . static::$table);
-        }
-    }
+	
     
     public static function delete($data) {
         try {
@@ -308,7 +290,7 @@ public static	function ajouterArticle($nomVaisseau,$qte,$prixVaisseau){
 
 public static function supprimerArticle($nomVaisseau){
    //Si le panier existe
-   if (creationPanier() && !isVerrouille())
+   if (Model::creationPanier() && !Model::isVerrouille())
    {
       //Nous allons passer par un panier temporaire
       $tmp=array();

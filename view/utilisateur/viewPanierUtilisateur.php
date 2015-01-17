@@ -24,7 +24,7 @@
 				echo "<td>".htmlspecialchars($_SESSION['panier']['nomVaisseau'][$i])."</ td>";
 				echo "<td><input type=\"text\" size=\"4\" name=\"q[]\" value=\"".htmlspecialchars($_SESSION['panier']['qte'][$i])."\"/></td>";
 				echo "<td>".htmlspecialchars($_SESSION['panier']['prixVaisseau'][$i])."</td>";
-				echo "<td><a href=\"".htmlspecialchars("utilisateur.php?action=suppressionArticle=".rawurlencode($_SESSION['panier']['nomVaisseau'][$i]))."\">XX</a></td>";
+				echo "<td><a href=\"".htmlspecialchars("utilisateur.php?action=suppressionArticle&nomVaisseau=".rawurlencode($_SESSION['panier']['nomVaisseau'][$i]))."\">Supprimer</a></td>";
 				echo "</tr>";
 			}
 

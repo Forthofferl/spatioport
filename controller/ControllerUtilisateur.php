@@ -286,7 +286,7 @@ switch ($action) {
 	case"dansPanier":
 	if(estConnecte()){
 		$data = array("nomVaisseau" => $_SESSION['nomVaisseau']);
-        $u = Model::selectWhereUtil($data);
+        $u = ModelUtilisateur::selectWhereUtil($data);
 		Model::ajouterArticle($u[0]->nomVaisseau,$_POST["quantite"],$u[0]->prixVaisseau);
 		$view="ajoutPanier";
 		$pagetitle="Ajouté!";
@@ -306,6 +306,24 @@ switch ($action) {
 		$view="panier";
 		$pagetitle="Panier";
 		$montantTotal=ModelUtilisateur::MontantGlobal();
+	}
+	else{
+			$view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Vous devez être connecté pour accéder à cette partie du site!";
+            
+		}
+	break;
+	
+	case"suppressionArticle":
+	
+	if(estConnecte()){
+		$l = $_GET['nomVaisseau'] ;
+		$l = preg_replace('#\v#', '',$l);
+		Model::supprimerArticle($l);
+		$view="panier";
+		$pagetitle="Panier";
+		$montantTotal=Model::MontantGlobal();
 	}
 	else{
 			$view = "error";
