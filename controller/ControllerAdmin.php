@@ -9,7 +9,11 @@ require_once MODEL_PATH . 'ModelVaisseau.php';
 
 
 switch ($action) {
-
+	case "accueil":
+		$view="accueil";
+		$pagetitle="Accueil";
+	break;
+	
 	case "gestion":
 		if(estConnecte()&&estAdmin()){
 		

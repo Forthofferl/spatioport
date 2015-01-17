@@ -10,7 +10,8 @@ function view1($u) {
     // La syntaxe suivante permet de créer facilement des chaînes de caractères multi-lignes
     echo <<< EOT
     
-    <h2>Informations sur le vaisseau $n</h2>
+    <h2>Informations sur le $n</h2>
+	<img src="<?php echo VIEW_PATH_BASE.'img/$n.jpg'?>" title="$n" width="200" height="150">
               <h3>Prix: $p</h3>
 			  <h3>Categorie: $c</h3>
 			  <h3>Nombre en stock: $nbr</h3>

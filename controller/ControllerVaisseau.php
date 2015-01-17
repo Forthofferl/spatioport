@@ -238,7 +238,37 @@ switch ($action) {
             }
 		break;
 
+	case "find":
+		$data = array("nomVaisseau" => $_GET['nomVaisseau']);
+		$_SESSION['nomVaisseau']=$_GET['nomVaisseau'];
+        $u = ModelVaisseau::selectWhere($data);
 		
+		
+		
+        // Chargement de la vue
+        if ($u==null) {
+            $view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Il n'existe aucun vaisseau de ce nom";
+        } else {
+			if(estConnecte()&&estAdmin()){
+            $view = "searchedA";
+            $pagetitle = "Détail d'un vaisseau";
+			$_SESSION['idVais']=$u[0]->idVaisseau;
+			break;
+			}
+			elseif(estConnecte()){
+				$view="searchedU";
+				$pagetitle="Détail d'un vaisseau";
+			}	
+			else{
+				$view="error";
+				$pagetitle="Erreur";
+				$messageErreur="Vous devez être connecté pour pouvoir accéder à cette partie.";
+            }
+        }
+     break;
+	
 	case "searched":
  
         $data = array("nomVaisseau" => $_POST['nomVaisseau']);
