@@ -1,2 +1,2 @@
-        <p> L'utilisateur <?php $ps ?> a bien été créé </p>
-<p> <a href="utilisateur.php?action=connect">Cliquez ici pour vous connecter !</a> </p>
+        <p> Vous êtes inscrit avec succès ! </p>
+<p> Un mail de confirmation vous a été envoyer à l'addresse indiquer, pensez à regarder dans les courriels indésirables si vous ne le trouvez pas ! </p>

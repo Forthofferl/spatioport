@@ -4,7 +4,7 @@ require_once 'Model.php';
 
 class ModelVaisseau extends Model {
 
-    protected static $table = "vaisseau";
+    protected static $table = "Vaisseau";
     protected static $primary_index = "idVaisseau";
     
     public static function insertAndGetId($data) {

@@ -3,7 +3,7 @@
 require_once 'Model.php';
 
 class ModelUtilisateur extends Model {
-    protected static $table = "utilisateur";
+    protected static $table = "Utilisateur";
     protected static $primary_index = "idUtilisateur";
     
     /*public static function findTrajets($data) {
@@ -79,7 +79,7 @@ class ModelUtilisateur extends Model {
 */
 	public static function selectWhereUtil($data) {
         try {
-            $table = "vaisseau";
+            $table = "Vaisseau";
             $primary = "idVaisseau";
             $where = "";
             foreach ($data as $key => $value)

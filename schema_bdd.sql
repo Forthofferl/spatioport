@@ -27,6 +27,7 @@ CREATE TABLE Utilisateur
 	numtel INT,
 	nbrVaisseauAcheter INT NOT NULL,
 	admin BOOLEAN NOT NULL,
+	active VARCHAR(255) NOT NULL,
 	PRIMARY KEY (idUtilisateur)
 )ENGINE=INNODB;
 

@@ -201,6 +201,28 @@ class Model {
         }
     }
 	
+	 public static function updateQte($data) {
+        try {
+            $table = "Vaisseau";
+            $primary = "idVaisseau";
+                    
+            $id=$_SESSION['idVais'];
+            
+			
+            $sql = "UPDATE $table SET nbrEnStock=$data WHERE $primary=$id";            
+          
+            // Preparation de la requete
+            $req = self::$pdo->prepare($sql);
+			
+			
+            // execution de la requete
+            $req->execute();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die("Erreur lors de la mise à jour dans la BDD " . static::$table);
+        }
+    }
+	
 	public static function suppressionWhere($data) {
       try {
         $table = static::$table;
@@ -291,6 +313,7 @@ public static	function ajouterArticle($nomVaisseau,$qte,$prixVaisseau){
 public static function supprimerArticle($nomVaisseau){
    //Si le panier existe
    if (Model::creationPanier() && !Model::isVerrouille())
+
    {
       //Nous allons passer par un panier temporaire
       $tmp=array();
@@ -325,6 +348,31 @@ public static function MontantGlobal(){
       $total += $_SESSION['panier']['qte'][$i] * $_SESSION['panier']['prixVaisseau'][$i];
    }
    return $total;
+}
+
+
+
+public static function modifierArticle($nomVaisseau,$qte){
+   //Si le panier éxiste
+   if (Model::creationPanier() && !Model::isVerrouille())
+   {
+      //Si la quantité est positive on modifie sinon on supprime l'article
+      if ($qte > 0)
+      {
+         //Recharche du produit dans le panier
+         $positionProduit = array_search($nomVaisseau,  $_SESSION['panier']['nomVaisseau']);
+
+         if ($positionProduit != false)
+         {
+            $_SESSION['panier']['qte'][$positionProduit] = $qte ;
+			
+         }
+      }
+      else
+      Model::supprimerArticle($nomVaisseau);
+   }
+   else
+   echo "Un problème est survenu veuillez contacter l'administrateur du site.";
 }
 
 }

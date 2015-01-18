@@ -25,6 +25,7 @@
 				echo "<td><input type=\"text\" size=\"4\" name=\"q[]\" value=\"".htmlspecialchars($_SESSION['panier']['qte'][$i])."\"/></td>";
 				echo "<td>".htmlspecialchars($_SESSION['panier']['prixVaisseau'][$i])."</td>";
 				echo "<td><a href=\"".htmlspecialchars("utilisateur.php?action=suppressionArticle&nomVaisseau=".rawurlencode($_SESSION['panier']['nomVaisseau'][$i]))."\">Supprimer</a></td>";
+				echo "<td><a href=\"".htmlspecialchars("#=".rawurlencode($_SESSION['panier']['nomVaisseau'][$i]))."\">Modifier</a></td>";
 				echo "</tr>";
 			}
 
@@ -34,8 +35,9 @@
 			echo "</td></tr>";
 
 			echo "<tr><td colspan=\"4\">";
-			echo "<input type=\"submit\" value=\"Rafraichir\"/>";
-			echo "<input type=\"hidden\" name=\"action\" value=\"refresh\"/>";
+			echo "<a href=\"index.php\" class=\"btn btn-warning\"><span class=\"fa fa-angle-left\"></span> Continuer vos achats</a>";
+			echo "<a href=\"utilisateur.php?action=reglement\" class=\"btn btn-info\">Finaliser votre achat <span class=\"fa fa-angle-right\"></span></a>";
+			
 
 			echo "</td></tr>";
 		}

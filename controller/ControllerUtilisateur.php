@@ -1,7 +1,7 @@
 <?php
 
 require_once('config.inc.php');
-$controller="Utilisateur";
+$controller="utilisateur";
 // On va chercher le modele dans "./model/ModelUtilisateur.php"
 require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';
 require_once MODEL_PATH . 'Model.php';
@@ -28,13 +28,15 @@ switch ($action) {
                 "pseudo" => $_POST['pseudo'],
                 "pwd" => hash('sha256',$_POST['pwd'].Conf::getSeed()),
                 );
-				//$pwd=$_POST['pwd'];
-				//var_dump($pwd);
-				//var_dump($data);
+				
                 $user = ModelUtilisateur::selectWhere($data);
-				//var_dump($user);
+				
                 if($user != null) {
-                  
+					if($user[0]->active == "Oui") {
+                    $data2 = array(
+                      "idUtilisateur" => $user[0]->idUtilisateur,
+                      "pseudo" => $user[0]->pseudo
+                    );
                     $data2 = array(
 					  "admin" =>$user[0]->admin,
                       "idUtilisateur" => $user[0]->idUtilisateur,
@@ -46,12 +48,20 @@ switch ($action) {
                     /*if(isset($_POST['redirurl'])) $url = $_POST['redirurl'];
                     else{$url = ".";}
                     header("Location:$url");*/
+					
 					$view="connected";
 					$pagetitle="Vous êtes connecté!";
-                }
+					}
+					else{
+					$view="error";
+					$pagetitle="Erreur";
+					$messageErreur="Votre compte n'est pas activé ! Vérifié vos e-mails et cliquez sur le lien d'activation ! Pensez à regarder dans vos courriels indesirabless !";
+					}
+				}
                 else{
 				$view = "error";
 				$pagetitle = "Erreur";
+				$messageErreur= "Pseudo ou mot de passe incorrect!";
 				break;
 				} 
 				
@@ -68,14 +78,10 @@ switch ($action) {
            
     break;
 		
-	case "created":
 	
-			$view="created";
-			$pagetitle="Créer!";
-			$ps=myGet('pseudo');
-			break;
 			
     case "save":
+	if(!estConnecte()){
         if (is_null(myGet('pseudo') || is_null(myGet('prenom')) || is_null(myGet('nom')) 
                 || is_null(myGet('age')) || is_null(myGet('adr')) || is_null(myGet('pwd')) || is_null(myGet('pwd2')) || is_null(myGet('email')) || is_null(myGet('numtel')))) {
             $view = "error";
@@ -85,6 +91,7 @@ switch ($action) {
         if((myGet('mdp'))!=(myGet('mdp2'))){
             $view = "error";
             $pagetile ="Erreur";
+			$messageErreur="Les deux mots de passe entré ne sont pas identiques";
             break;
         }
         $data = array(
@@ -97,15 +104,72 @@ switch ($action) {
 			"numtel" => myGet("numtel"),
             "pwd" => hash('sha256',myGet("pwd") . Conf::getSeed())
         );
-        ModelUtilisateur::insert($data);
+		
+		$dataCheck = array(
+                "pseudo" => $_POST["pseudo"],
+                "email" => $_POST["email"]
+              );
+              $existe = ModelUtilisateur::selectWhereOr($dataCheck);
+              if ($existe != null) {
+				$view="error";
+				$pagetitle="erreur";
+                $messageErreur="Ce pseudo ou cet e-mail est déjà utilisé !";
+                break;
+              }
+        
+		$data['active'] = md5(uniqid(rand(),true));
+                  $active = $data['active'];
+                  
+                  //on créer l'email et on l'envoi
+                  $to = $_POST['email'];
+                  $subject = "Confirmation d'inscription à Spatioport";
+                  $body = nl2br("Merci de vous être inscrit sur notre site !\nPour activer votre compte, cliquez sur le lien suivant : ".URL.BASE."utilisateur.php?action=activation&key=$active \nL'équipe du Spatioport \n");
+                  $additional_headers = "From: <".SITEEMAIL.">\n";
+                  $additional_headers .= "Reply-To: $".SITEEMAIL."\n";
+                  $additional_headers .='Content-Type: text/html; charset="UTF-8"'."\n";
+                  $additional_headers .='Content-Transfer-Encoding: 8bit';
+								  mail($to, $subject, $body, $additional_headers);
+				  ModelUtilisateur::insert($data);
         // Initialisation des variables pour la vue
-        $login = myGet('pseudo');
-        $tab_util = ModelUtilisateur::selectAll();
+        
+        
         // Chargement de la vue
         $view = "created";
         $pagetitle = "Créer";
+	}
         break;
-
+	case "activation":
+        if(!estConnecte()){
+          $active = trim($_GET['key']);
+          if(!empty($active)){
+            $data = array(
+              "active" => $active
+            );
+            $user = ModelUtilisateur::selectWhere($data);
+            if($user != null) {
+              $data2 = array(
+                "idUtilisateur" => $user[0]->idUtilisateur,
+                "active" => "Oui"
+              );
+			$_SESSION['idUtilisateur']=$user[0]->idUtilisateur;
+              ModelUtilisateur::update($data2);
+              $view="actived";
+              $pagetitle="Validation complétée avec succès !";
+            }
+            else {
+			$view="error";
+			$pagetitle="Erreur";
+              $messageErreur="Votre compte est déjà activé ou ce lien est invalide !";
+            }
+          }
+          else {
+            header('Location:.');
+          }
+        }
+        else{
+          header('Location:.');
+        }
+        break;
    case "update":
 	if(estConnecte()){
         
@@ -287,9 +351,20 @@ switch ($action) {
 	if(estConnecte()){
 		$data = array("nomVaisseau" => $_SESSION['nomVaisseau']);
         $u = ModelUtilisateur::selectWhereUtil($data);
+		$_SESSION['qte']=$u[0]->nbrEnStock;
+		
+		$data=$_SESSION['qte']-$_POST["quantite"];
+		if($data<0){
+			$view="error";
+			$pagetitle="Erreur";
+			$messageErreur="Il n'y a pas assez de quantité en stock";
+		}
+		else{
 		Model::ajouterArticle($u[0]->nomVaisseau,$_POST["quantite"],$u[0]->prixVaisseau);
+		Model::updateQte($data);
 		$view="ajoutPanier";
 		$pagetitle="Ajouté!";
+		}
 	}
 	else{
 			$view = "error";
@@ -320,10 +395,15 @@ switch ($action) {
 	if(estConnecte()){
 		$l = $_GET['nomVaisseau'] ;
 		$l = preg_replace('#\v#', '',$l);
+		$data= array("nomVaisseau" => $l);
+		$u=ModelUtilisateur::selectWhereUtil($data);
+		$_SESSION['idVais']=$u[0]->idVaisseau;
 		Model::supprimerArticle($l);
 		$view="panier";
 		$pagetitle="Panier";
 		$montantTotal=Model::MontantGlobal();
+		//var_dump($_SESSION['qte']);
+		Model::updateQte($_SESSION['qte']);
 	}
 	else{
 			$view = "error";
@@ -332,6 +412,37 @@ switch ($action) {
             
 		}
 	break;
+	
+	case"modifierArticle":
+	
+	if(estConnecte()){
+		$l = $_GET['nomVaisseau'] ;
+		$l = preg_replace('#\v#', '',$l);
+		$qte = (isset($_POST['q'])? $_POST['q']:  (isset($_GET['q'])? $_GET['q']:null )); 
+		var_dump($qte);
+		$data=$_SESSION['qte']-$qte;
+		if($data<=0){
+			$view="error";
+			$pagetitle="Erreur";
+			$messageErreur="Il n'y a pas assez de quantité en stock";
+		}
+		else{
+		
+		Model::modifierArticle($l,$qte);
+		$view="create";
+		$pagetitle="Panier";
+		//$montantTotal=Model::MontantGlobal();
+		}
+	}
+	else{
+			$view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Vous devez être connecté pour accéder à cette partie du site!";
+            
+		}
+	break;
+	
+	
 	
 	
 	

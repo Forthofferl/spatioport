@@ -24,7 +24,9 @@
     </form>
   </div>
 </li>
-<li class="active" ><a href="utilisateur.php?action=panier"><span class="fa fa-pie-chart"></span> Panier</a></li>
+<li class="active" ><a href="utilisateur.php?action=panier"><span class="fa fa-shopping-cart"></span> Panier (<?php 
+	if (isset($_SESSION['panier'])) echo count($_SESSION['panier']['nomVaisseau']);
+	else echo 0; ?>)</a></li>
 <li class="active"><a href="utilisateur.php?action=profil"><span class="fa fa-user"></span> Profil</a></li>
 <li><a href="utilisateur.php?action=deconnexion"><span class="fa fa-toggle-off"></span> Se déconnecter (<?php echo $_SESSION['pseudo']; ?>)</a></li>
 

@@ -1,7 +1,7 @@
 <?php
 
 require_once('config.inc.php');
-$controller="Vaisseau";
+$controller="vaisseau";
 // On va chercher le modele dans "./model/ModelVaisseau.php"
 require_once MODEL_PATH . 'Model' . ucfirst($controller) . '.php';
 require_once MODEL_PATH . 'Model.php';
@@ -20,7 +20,7 @@ switch ($action) {
 		
 		
         $u = ModelVaisseau::selectWhere($data);
-		
+		$_SESSION['nomVaisseau']=$u[0]->nomVaisseau;
         // Chargement de la vue
         if (is_null($u)) {
             $view = "error";
@@ -250,17 +250,7 @@ switch ($action) {
         }
         break;
 		
-	case "search":
-		if(estConnecte()){
-		$view = "search";
-		$pagetitle="Recherche";
-		}
-		else{
-              $view="error";
-			  $pagetitle="Erreur";
-			  $messageErreur="Vous devez être connecté pour pouvoir accéder à cette partie.";
-            }
-		break;
+	
 
 		
 	case "searched":
@@ -270,7 +260,7 @@ switch ($action) {
 		$_SESSION['nomVaisseau']=$_POST['nomVaisseau'];
         $u = ModelVaisseau::selectWhere($data);
 		
-		
+		$_SESSION['idVais']=$u[0]->idVaisseau;
 		
 		
         // Chargement de la vue
@@ -282,10 +272,11 @@ switch ($action) {
 			if(estConnecte()&&estAdmin()){
             $view = "searchedA";
             $pagetitle = "Détail d'un vaisseau";
-			$_SESSION['idVais']=$u[0]->idVaisseau;
+			
 			break;
 			}
 			elseif(estConnecte()){
+				
 				$view="searchedU";
 				$pagetitle="Détail d'un vaisseau";
 			}	
