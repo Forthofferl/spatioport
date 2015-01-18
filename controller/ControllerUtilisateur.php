@@ -9,7 +9,7 @@ require_once MODEL_PATH . 'Model.php';
 
 switch ($action) {
         
-
+	
     case "connect":
 		
 		$view="connexion";
@@ -442,6 +442,11 @@ switch ($action) {
             
 		}
 	break;
+	case "accueil":
+		$view="accueil";
+		$pagetitle="Accueil";
+	break;
+			
 	
 	case"reglement":
 	$data=array("idUtilisateur"=>
