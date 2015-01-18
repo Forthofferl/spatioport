@@ -381,6 +381,7 @@ switch ($action) {
 		$view="panier";
 		$pagetitle="Panier";
 		$montantTotal=ModelUtilisateur::MontantGlobal();
+		$_SESSION['panier']['verrou']=false;
 	}
 	else{
 			$view = "error";
@@ -392,7 +393,7 @@ switch ($action) {
 	
 	case"suppressionArticle":
 	
-	if(estConnecte()){
+	if(estConnecte()&&!Model::isVerrouille()){
 		$l = $_GET['nomVaisseau'] ;
 		$l = preg_replace('#\v#', '',$l);
 		$data= array("nomVaisseau" => $l);
@@ -415,7 +416,7 @@ switch ($action) {
 	
 	case"modifierArticle":
 	
-	if(estConnecte()){
+	if(estConnecte()&&!Model::isVerrouille()){
 		$l = $_GET['nomVaisseau'] ;
 		$l = preg_replace('#\v#', '',$l);
 		$qte = (isset($_POST['q'])? $_POST['q']:  (isset($_GET['q'])? $_GET['q']:null )); 
@@ -442,7 +443,17 @@ switch ($action) {
 		}
 	break;
 	
+	case"reglement":
+	$data=array("idUtilisateur"=>
+	$_SESSION['idUtilisateur']);
+	$u=ModelUtilisateur::selectWhere($data);
 	
+	 $view="reglement";
+	 $pagetitle="Reglement de la commande";
+	 $_SESSION['panier']['verrou']=true;
+	 $nbArticles=count($_SESSION['panier']['nomVaisseau']);
+	 $montantTotal=ModelUtilisateur::MontantGlobal();
+	 break;
 	
 	
 	

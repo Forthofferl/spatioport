@@ -46,6 +46,7 @@ class ModelUtilisateur extends Model {
         
         session_unset();
         session_destroy();
+		
     }
 
     public static function checkExisteConnexion($data) {
