@@ -28,7 +28,7 @@
 	if (isset($_SESSION['panier'])) echo count($_SESSION['panier']['nomVaisseau']);
 	else echo 0; ?>)</a></li>
 
-<li ><a href="utilisateur.php?action=create"><span class="fa fa-coffee"></span> S'inscrire</a></li>
+<li ><a href="utilisateur.php?action=create"><span class="fa fa-pencil"></span> S'inscrire</a></li>
 <li class="dropdown"> <a class="dropdown-toogle" href="#" data-toggle="dropdown"><span class="fa fa-coffee"></span> Se connecter</a>
 <div class="dropdown-menu" style="padding: 15px;">
     <form method="post" action="utilisateur.php?action=connected">

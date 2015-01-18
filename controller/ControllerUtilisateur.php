@@ -75,27 +75,27 @@ switch ($action) {
 			
     case "save":
 	if(!estConnecte()){
-        if (is_null(myGet('pseudo') || is_null(myGet('prenom')) || is_null(myGet('nom')) 
-                || is_null(myGet('age')) || is_null(myGet('adr')) || is_null(myGet('pwd')) || is_null(myGet('pwd2')) || is_null(myGet('email')) || is_null(myGet('numtel')))) {
+        if (is_null($_POST['pseudo'] || is_null($_POST['prenom']) || is_null($_POST['nom']) 
+                || is_null($_POST['age']) || is_null($_POST['adr']) || is_null($_POST['pwd']) || is_null($_POST['pwd2']) || is_null($_POST['email']) || is_null($_POST['numtel']))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
-        if((myGet('mdp'))!=(myGet('mdp2'))){
+        if(($_POST['pwd'])!=($_POST['pwd2'])){
             $view = "error";
             $pagetile ="Erreur";
 			$messageErreur="Les deux mots de passe entré ne sont pas identiques";
             break;
         }
         $data = array(
-            "pseudo" => myGet("pseudo"),
-            "nom" => myGet("nom"),
-            "prenom" => myGet("prenom"),
-            "email" => myGet("email"),
-			"adr" => myGet("adr"),
-			"age" => myGet("age"),
-			"numtel" => myGet("numtel"),
-            "pwd" => hash('sha256',myGet("pwd") . Conf::getSeed())
+            "pseudo" => $_POST["pseudo"],
+            "nom" => $_POST["nom"],
+            "prenom" => $_POST["prenom"],
+            "email" => $_POST["email"],
+			"adr" => $_POST["adr"],
+			"age" => $_POST["age"],
+			"numtel" => $_POST["numtel"],
+            "pwd" => hash('sha256',$_POST["pwd"] . Conf::getSeed())
         );
 		
 		$dataCheck = array(
@@ -361,12 +361,13 @@ switch ($action) {
 		
 		$data = array("nomVaisseau" => $_SESSION['nomVaisseau']);
         $u = ModelUtilisateur::selectWhereUtil($data);
-		if(array_search($_SESSION['nomVaisseau'],$_SESSION['panier']['nomVaisseau'])==0){
-		;
+		
+		if(Model::estDansPanier($_SESSION['nomVaisseau'])==false){
+		$_SESSION['qte']=$u[0]->nbrEnStock;
 		}
 		else{
+		;
 		
-		$_SESSION['qte']=$u[0]->nbrEnStock;
 		}
 		
 		$data=$u[0]->nbrEnStock-$_POST["quantite"];

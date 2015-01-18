@@ -20,13 +20,14 @@ switch ($action) {
 		
 		
         $u = ModelVaisseau::selectWhere($data);
-		$_SESSION['nomVaisseau']=$u[0]->nomVaisseau;
+		
         // Chargement de la vue
         if (is_null($u)) {
             $view = "error";
             $pagetitle = "Erreur";
 			$messageErreur="Ce vaisseau n'existe pas ou plus";
         } else {
+			$_SESSION['idVais']=$u[0]->idVaisseau;
             $view = "searchedU";
             $pagetitle = "Détail d'un vaisseau ";
         }
@@ -210,10 +211,13 @@ switch ($action) {
 	
 
 	case "find":
-		$data = array("nomVaisseau" => $_GET['nomVaisseau']);
-		$_SESSION['nomVaisseau']=$_GET['nomVaisseau'];
+		$nomVaisseau = preg_replace('#\v#', '',$_GET['nomVaisseau']);
+		$data = array("nomVaisseau" => $nomVaisseau);
+		$_SESSION['nomVaisseau']=$nomVaisseau;
+		
         $u = ModelVaisseau::selectWhere($data);
-		$_SESSION['idVais']=$u[0]->idVaisseau;
+		
+		
 		
 		
         // Chargement de la vue
@@ -223,12 +227,14 @@ switch ($action) {
 			$messageErreur="Il n'existe aucun vaisseau de ce nom";
         } else {
 			if(estConnecte()&&estAdmin()){
+			$_SESSION['idVais']=$u[0]->idVaisseau;
             $view = "searchedA";
             $pagetitle = "Détail d'un vaisseau";
 			
 			break;
 			}
 			else{
+				$_SESSION['idVais']=$u[0]->idVaisseau;
 				$view="searchedU";
 				$pagetitle="Détail d'un vaisseau";
 			}	

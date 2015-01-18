@@ -201,6 +201,19 @@ class Model {
         }
     }
 	
+	public static function estDansPanier($nomVaisseau){
+		$boolean=false;
+		if(in_array($_SESSION['nomVaisseau'],$_SESSION['panier']['nomVaisseau'])==false){
+			return $boolean;
+		
+		}
+		else{
+		$boolean=true;
+		return $boolean;
+		}
+	
+	}
+	
 	 public static function updateQte($data) {
         try {
             $table = "Vaisseau";
@@ -214,7 +227,7 @@ class Model {
             // Preparation de la requete
             $req = self::$pdo->prepare($sql);
 			
-			var_dump($req);
+			
             // execution de la requete
             $req->execute();
         } catch (PDOException $e) {
