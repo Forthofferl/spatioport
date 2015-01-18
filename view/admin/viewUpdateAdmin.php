@@ -1,51 +1,23 @@
-<?php
-echo <<< EOT
-        <form method="post" action=".">
-            <fieldset>
-                <legend>$label d'un utilisateur</legend>
-                <p>
-                    <label for="id_pseudo">Pseudo</label> :
-                    <input type="text" value="$ps" name="pseudo" id="id_pseudo" $pseudo_status/>
-                </p>
-                <p>
-                    <label for="id_nom">Nom</label> :
-                    <input type="text" value="$n" name="nom" id="id_nom" required/>
-                </p>
-                <p>
-                    <label for="id_prenom">Prénom</label> :
-                    <input type="text" value="$p" name="prenom" id="id_prenom" required/>
-                </p>
-                <p>
-                    <label for="id_email">Email</label> :
-                    <input type="text" value="$e" name="email" id="id_email" required/>
-                </p>
-				<p>
-                    <label for="id_age">Age</label> :
-                    <input type="text" value="$a" name="age" id="id_age" required/>
-                </p>
-				<p>
-                    <label for="id_adr">Adresse</label> :
-                    <input type="text" value="$adr" name="adr" id="id_adr" required/>
-                </p>
-				<p>
-                    <label for="id_numtel">Numéro de téléphone</label> :
-                    <input type="text" value="$t" name="numtel" id="id_numtel" required/>
-                </p>
-                <p>
-                    <label for="id_pwd">Mot de passe</label> :
-                    <input type="password" value="Nouveau mot de passe" name="pwd" id="id_pwd" required/>
-                </p>
-                <p>
-                    <label for="id_pwd2">Mot de passe</label> :
-                    <input type="password" value="Confirmation du nouveau mot de passe" name="pwd2" id="id_pwd2" required/>
-                </p>
-				
-                <input type="hidden" name="action" value="updated" />
-                <input type="hidden" name="controller" value="admin" />                
-                <p>
-                    <input type="submit" value="$submit" />
-                </p>
-            </fieldset>
-        </form>
-EOT;
-?>
+
+
+<h2 id="mainhead"><span class="fa fa-refresh fa-spin"></span> Mettre à jour le profil de <?php echo $ps ?></h2>
+<hr>
+<div class="row">
+<div class="col-md-offset-3 col-md-6">
+<form method="post" action="administrateur.php?action=updated">
+        <div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span><input type="text" class="form-control" value="<?php echo $ps ?>" name="pseudo" id="id_pseudo" required/></div><br/>
+        <div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span><input type="text" class="form-control" value="<?php echo $n ?>" name="nom" id="id_nom" required/></div><br/>
+		<div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span><input type="text" class="form-control" value="<?php echo $p ?>" name="prenom" id="id_prenom" required/></div><br/>
+        <div class="input-group"><span class="input-group-addon"><i class="fa fa-calculator"></i></span><input type="number" class="form-control" value="<?php echo $a ?>" name="age" id="id_age" min="1" max="100" required/></div><br/>
+        <div class="input-group"><span class="input-group-addon"><i class="fa fa-key"></i></span><input type="password" class="form-control strength" name="pwd" placeholder="Nouveau mot de passe" id="id_pwd" autocomplete="off"/></div><br/>
+        <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope"></i></span><input type="email" class="form-control" value="<?php echo $e ?>" name="email" id="id_email" required/></div><br/>
+		<div class="input-group"><span class="input-group-addon"><i class="fa fa-phone"></i></span><input type="number" class="form-control" value="<?php echo $t ?>" name="numtel" id="id_numtel" required/></div><br/>
+		<div class="input-group"><span class="input-group-addon"><i class="fa"></i></span><input type="text" class="form-control" value="<?php echo $adr ?>" name="adr" id="id_adr" required/></div><br/>
+		<label> Admin ? </label>
+		
+		<center><div class="input-group"><input type="radio" class="form-control" value="Oui" name="admin" id="id_admin" >Oui</div>
+		<div class="input-group"><input type="radio" class="form-control" value="Non" name="admin" id="id_admin" checked>Non</div></center>
+		<input type="submit" class="btn btn-default" value="&#xf021; Mettre à jour" />
+</form>
+</div>
+</div>

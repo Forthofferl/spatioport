@@ -214,12 +214,12 @@ class Model {
             // Preparation de la requete
             $req = self::$pdo->prepare($sql);
 			
-			
+			var_dump($req);
             // execution de la requete
             $req->execute();
         } catch (PDOException $e) {
             echo $e->getMessage();
-            die("Erreur lors de la mise à jour dans la BDD " . static::$table);
+            die("Erreur lors de la mise à jour dans la BDD ".$table);
         }
     }
 	
@@ -374,6 +374,54 @@ public static function modifierArticle($nomVaisseau,$qte){
    else
    echo "Un problème est survenu veuillez contacter l'administrateur du site.";
 }
+
+public static function supprimePanier(){
+   unset($_SESSION['panier']);
+}
+
+public static function insertAchat($data) {
+        try {
+			$table = "Achat";
+            $indices = "";
+            $values = "";
+            foreach ($data as $key => $value) {
+                $indices .= "$key, ";
+                $values .= ":$key, ";
+            }
+            $indices = '(' . rtrim($indices, ', ') . ')';
+            $values = '(' . rtrim($values, ', ') . ')';
+            $sql = "INSERT INTO $table $indices VALUES $values";
+            // Preparation de la requete
+            $req = self::$pdo->prepare($sql);
+            // execution de la requete
+            return $req->execute($data);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die("Erreur lors de l\'insertion dans la BDD Achat");
+        }
+    }
+
+public static function insertCommande($data) {
+        try {
+			$table = "Commande";
+            $indices = "";
+            $values = "";
+            foreach ($data as $key => $value) {
+                $indices .= "$key, ";
+                $values .= ":$key, ";
+            }
+            $indices = '(' . rtrim($indices, ', ') . ')';
+            $values = '(' . rtrim($values, ', ') . ')';
+            $sql = "INSERT INTO $table $indices VALUES $values";
+            // Preparation de la requete
+            $req = self::$pdo->prepare($sql);
+            // execution de la requete
+            return $req->execute($data);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die("Erreur lors de l\'insertion dans la BDD commande");
+        }
+    }
 
 }
 

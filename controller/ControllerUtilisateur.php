@@ -10,14 +10,7 @@ require_once MODEL_PATH . 'Model.php';
 switch ($action) {
         
 	
-    case "connect":
-		
-		$view="connexion";
-		$pagetitle="connexion";
-		$label="connexion";
-		$submit="Se connecter";
-		break;
-		
+    
 	case "connected":
             if(!estConnecte()){
 				
@@ -310,10 +303,26 @@ switch ($action) {
             break;
 			}
 			else{
+			$data=array("idAcheteur"=>$_SESSION['idUtilisateur']);
+			$v=ModelUtilisateur::selectWhereHistorique($data);
+			
+			$tableauVue = '<div class="table-responsive"><table class="table table-bordered table-hover"><thead>
+                <tr><th> Numéro de la commande </th><th> Date </th><th> Nom du vaisseau </th><th> Quantité </th><th> Montant </th></tr></thead><tbody>';
+                foreach ($v as $commande) {
+                  
+				  $tableauVue .= '<tr><td>'.$commande->idAchat.'</td>';
+                  $tableauVue .= '<td>'.$commande->date.'</td>';                  
+                  $tableauVue .= '<td>'.$commande->nomVaisseau.'</td>';             
+                  $tableauVue .= '<td>'.$commande->qte.'</td>';
+				  $tableauVue .= '<td>'.$commande->montantUnitaire.'</td></tr>';
+               
+                
+			
+				}
+			$tableauVue .= '</tbody></table></div>';
 			$view="profil";
 			$controller="utilisateur";
 			$pagetitle="Informations sur le profil";
-			
 			}
 		}
 		else{
@@ -348,12 +357,19 @@ switch ($action) {
 		break;
 		
 	case"dansPanier":
-	if(estConnecte()){
+		
+		
 		$data = array("nomVaisseau" => $_SESSION['nomVaisseau']);
         $u = ModelUtilisateur::selectWhereUtil($data);
-		$_SESSION['qte']=$u[0]->nbrEnStock;
+		if(array_search($_SESSION['nomVaisseau'],$_SESSION['panier']['nomVaisseau'])==0){
+		;
+		}
+		else{
 		
-		$data=$_SESSION['qte']-$_POST["quantite"];
+		$_SESSION['qte']=$u[0]->nbrEnStock;
+		}
+		
+		$data=$u[0]->nbrEnStock-$_POST["quantite"];
 		if($data<0){
 			$view="error";
 			$pagetitle="Erreur";
@@ -365,35 +381,25 @@ switch ($action) {
 		$view="ajoutPanier";
 		$pagetitle="Ajouté!";
 		}
-	}
-	else{
-			$view = "error";
-            $pagetitle = "Erreur";
-			$messageErreur="Vous devez être connecté pour accéder à cette partie du site!";
-            
-		}
+		
+	
+	
 	
 	break;
 	
 	case"panier":
 	
-	if(estConnecte()){
+	
 		$view="panier";
 		$pagetitle="Panier";
 		$montantTotal=ModelUtilisateur::MontantGlobal();
 		$_SESSION['panier']['verrou']=false;
-	}
-	else{
-			$view = "error";
-            $pagetitle = "Erreur";
-			$messageErreur="Vous devez être connecté pour accéder à cette partie du site!";
-            
-		}
+	
 	break;
 	
 	case"suppressionArticle":
 	
-	if(estConnecte()&&!Model::isVerrouille()){
+	if(!Model::isVerrouille()){
 		$l = $_GET['nomVaisseau'] ;
 		$l = preg_replace('#\v#', '',$l);
 		$data= array("nomVaisseau" => $l);
@@ -409,7 +415,7 @@ switch ($action) {
 	else{
 			$view = "error";
             $pagetitle = "Erreur";
-			$messageErreur="Vous devez être connecté pour accéder à cette partie du site!";
+			$messageErreur="Bien essayer! Mais vous ne pouvez pas supprimer un article via l'url lorsque que vous finalisez un achat !";
             
 		}
 	break;
@@ -449,24 +455,93 @@ switch ($action) {
 			
 	
 	case"reglement":
+	if(estConnecte()){
 	$data=array("idUtilisateur"=>
 	$_SESSION['idUtilisateur']);
 	$u=ModelUtilisateur::selectWhere($data);
-	
+	$n=$u[0]->nom;
+	$p=$u[0]->prenom;
+	$adr=$u[0]->adr;
 	 $view="reglement";
 	 $pagetitle="Reglement de la commande";
 	 $_SESSION['panier']['verrou']=true;
 	 $nbArticles=count($_SESSION['panier']['nomVaisseau']);
 	 $montantTotal=ModelUtilisateur::MontantGlobal();
-	 break;
+	 }
+	 else{
+			$view = "error";
+            $pagetitle = "Erreur";
+			$messageErreur="Vous devez être connecté pour accéder à cette partie du site!";
+            
+		}
+	break;
 	
+	case"confirmation":
+	if(estConnecte()){
 	
+		$montantTotal=ModelUtilisateur::MontantGlobal();
+		$date=date('Y-m-j H:i:s');
+		
+		$data=array(
+				"idAcheteur" => $_SESSION['idUtilisateur'],
+				"montantGlobale" => $montantTotal,
+				"date" => $date
+		);
+		ModelUtilisateur::insertAchat($data);
+		$v=ModelUtilisateur::selectWhereAchat($data);
+		$idA=$v[0]->idAchat;
+		$nbArticles=count($_SESSION['panier']['nomVaisseau']);
+		for ($i=0 ;$i < $nbArticles ; $i++){
+			$data2=array("nomVaisseau"=>$_SESSION['panier']['nomVaisseau'][$i]);
+			$u=ModelUtilisateur::selectWhereUtil($data2);
+			$id=$u[0]->idVaisseau;
+			$data3=array(
+				"idVaisseau" => $id,
+				"idAchat" => $idA,
+				"qte" => $_SESSION['panier']['qte'][$i],
+				"montantUnitaire" => $_SESSION['panier']['prixVaisseau'][$i]
+			);
+			ModelUtilisateur::insertCommande($data3);
+			}
+		
+		Model::supprimePanier();
+		Model::creationPanier();
+		$view="recapitulatif";
+		$pagetitle="Recapitulatif";
+				
+	}
+	else{
 	
+		$view="error";
+		$pagetitle="Connectez vous!";
+		$messageErreur="Vous devez être connecté pour finaliser votre achat!";
+	}
+	
+	break;
+	case"contact":
+	
+	if(estConnecte()){
+		$data=array("idUtilisateur"=>idUtilisateur);
+		$u=ModelUtilisateur::selectWhere($data);
+		$ps=$_SESSION['pseudo'];
+		$mail=$u[0]->email;
+		$view="contact";
+		$pagetitle="Contact";
+	}
+	else{
+		
+		$ps="";
+		$mail="";
+		$view="contact";
+		$pagetitle="Contact";
+	}
+	
+	break;
 		
 	default :
-			$view="error";
-			$pagetitle="Erreur";
-            $messageErreur="Il semblerait que vous ayez trouvé un glitch dans le système !";
+			$view="accueil";
+			$pagetitle="Bienvenue !";
+			Model::creationPanier();
 
         
 	

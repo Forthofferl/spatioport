@@ -9,14 +9,14 @@ require_once MODEL_PATH . 'Model.php';
 switch ($action) {
     case "read":
 		
-        if (is_null($_GET['id'])) {
+        if (is_null($_GET['nomVaisseau'])) {
             $view = "error";
             $pagetitle = "Erreur";
 			$messageErreur="La recherche n'est pas valide!";
             break;
         }
         // Initialisation des variables pour la vue        
-        $data = array("idVaisseau" => $_GET['id']);
+        $data = array("nomVaisseau" => $_GET['nomVaisseau']);
 		
 		
         $u = ModelVaisseau::selectWhere($data);
@@ -32,44 +32,7 @@ switch ($action) {
         }
         break;
 
-    case "readAllUtilisateurs":
-        require_once MODEL_PATH . 'ModelUtilisateur.php';
-        if (!is_null(myGet('id'))) {
-            $view = "error";
-            $pagetitle = "Erreur";
-            break;
-        }
-        // Initialisation des variables pour la vue        
-        $data = array("id" => myGet('id'));
-        $tab_util = ModelVaisseau::findUtilisateurs($data);
-        $id = myGet('id');
-        $t = ModelVaisseau::select($data);
-        $data2 = array ("login" => $t->conducteur);
-        $u = ModelUtilisateur::select($data2);
-        $view = "ListUtilisateurs";
-        $pagetitle = "Liste des utilisateurs d'un Vaisseau";
-        break;
-        
-    case "deleteUtilisateur":
-        require_once MODEL_PATH . 'ModelUtilisateur.php';
-        if (!(is_null(myGet('id')) || is_null(myGet('login')))) {
-            $view = "error";
-            $pagetitle = "Erreur";
-            break;
-        }
-        $id = myGet('id');
-        $login = myGet('login');        
-        $data = array("id" => $id, "login" => $login);
-        ModelVaisseau::deletePassager($data);
-        
-        $data = array("id" => $id);
-        $tab_util = ModelVaisseau::findUtilisateurs($data);        
-        $t = ModelVaisseau::select($data);
-        $data2 = array ("login" => $t->conducteur);
-        $u = ModelUtilisateur::select($data2);
-        $view = "DeleteUtilisateurs";
-        $pagetitle = "Liste des utilisateurs d'un Vaisseau";
-        break;
+    
         
     case "update":
 	if(estConnecte()&&estAdmin()){
@@ -226,7 +189,7 @@ switch ($action) {
 
     case "readAll":
         // Initialisation des variables pour la vue
-		if(estConnecte()){
+		
 		$data= array("categorie" => $_GET['cat']);
         $tab_vaisseau = ModelVaisseau::selectWhere($data);
 		
@@ -242,12 +205,7 @@ switch ($action) {
 				break;
 			}
 			
-		}
-		else{
-            $view="error";
-			$pagetitle="Erreur";
-			$messageErreur="Vous devez être connecté pour pouvoir accéder à cette partie.";
-        }
+		
         break;
 		
 	
@@ -256,7 +214,7 @@ switch ($action) {
 		$data = array("nomVaisseau" => $_GET['nomVaisseau']);
 		$_SESSION['nomVaisseau']=$_GET['nomVaisseau'];
         $u = ModelVaisseau::selectWhere($data);
-		
+		$_SESSION['idVais']=$u[0]->idVaisseau;
 		
 		
         // Chargement de la vue
@@ -268,18 +226,14 @@ switch ($action) {
 			if(estConnecte()&&estAdmin()){
             $view = "searchedA";
             $pagetitle = "Détail d'un vaisseau";
-			$_SESSION['idVais']=$u[0]->idVaisseau;
+			
 			break;
 			}
-			elseif(estConnecte()){
+			else{
 				$view="searchedU";
 				$pagetitle="Détail d'un vaisseau";
 			}	
-			else{
-				$view="error";
-				$pagetitle="Erreur";
-				$messageErreur="Vous devez être connecté pour pouvoir accéder à cette partie.";
-            }
+			
         }
      break;
 	
@@ -305,16 +259,12 @@ switch ($action) {
 			
 			break;
 			}
-			elseif(estConnecte()){
+			else{
 				
 				$view="searchedU";
 				$pagetitle="Détail d'un vaisseau";
 			}	
-			else{
-				$view="error";
-				$pagetitle="Erreur";
-				$messageErreur="Vous devez être connecté pour pouvoir accéder à cette partie.";
-            }
+			
         }
 		break;
 		

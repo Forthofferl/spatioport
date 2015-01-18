@@ -38,7 +38,7 @@ class ModelUtilisateur extends Model {
         $_SESSION['idUtilisateur'] = $data['idUtilisateur'];
         $_SESSION['pseudo'] = $data['pseudo'];
 		$_SESSION['admin'] = $data['admin'];
-		Model::creationPanier();
+		
 		
     }
 
@@ -97,6 +97,68 @@ class ModelUtilisateur extends Model {
             die("Erreur lors de la recherche dans la BDD " . static::$table);
         }
     }
+	
+	public static function selectWhereAchat($data) {
+        try {
+            $table ="Achat";
+            $where ="";
+            foreach ($data as $key => $value)
+                $where .= " $table.$key=:$key AND";
+            $where = rtrim($where, 'AND');
+            $sql = "SELECT * FROM $table WHERE $where";
+            // Preparation de la requete
+            $req = self::$pdo->prepare($sql);
+            // execution de la requete
+            $req->execute($data);
+            return $req->fetchAll(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die("Erreur lors de la recherche dans la BDD " . static::$table);
+        }
+    }
+	public static function selectWhereCommande($data) {
+        try {
+            $table ="Commande";
+            $where ="";
+            foreach ($data as $key => $value)
+                $where .= " $table.$key=:$key AND";
+            $where = rtrim($where, 'AND');
+            $sql = "SELECT * FROM $table WHERE $where";
+            // Preparation de la requete
+            $req = self::$pdo->prepare($sql);
+            // execution de la requete
+            $req->execute($data);
+            return $req->fetchAll(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die("Erreur lors de la recherche dans la BDD " . static::$table);
+        }
+    }
+	
+	public static function selectWhereHistorique($data) {
+        try {
+            $table ="Commande";
+			$table2 ="Vaisseau";
+			$table3 ="Achat";
+            $where ="";
+            foreach ($data as $key => $value)
+                $where .= " $table3.$key=:$key AND";
+            $where = rtrim($where, 'AND');
+            $sql = "SELECT * FROM $table3
+				JOIN $table ON $table3.idAchat=$table.idAchat
+				JOIN $table2 ON $table.idVaisseau=$table2.idVaisseau
+				WHERE $where";
+            // Preparation de la requete
+            $req = self::$pdo->prepare($sql);
+            // execution de la requete
+            $req->execute($data);
+            return $req->fetchAll(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            die("Erreur lors de la recherche dans la BDD " . static::$table);
+        }
+    }
+	
 }
 
 ?>

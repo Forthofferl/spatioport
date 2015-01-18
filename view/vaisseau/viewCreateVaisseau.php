@@ -20,10 +20,7 @@ echo <<< EOT
 					<b>
                     Description:
 					</b>
-				</p>
-                    <textarea name="description" rows="3" cols="60" required/>$d</textarea>
-                
-				<p>
+				
 					<label for="id_categorie">Catégorie</label> :
 					<select name="categorie" id="categorie">
 						<option selected="selected" value="selection de categorie">selectionnez une catégorie</option>
@@ -39,6 +36,10 @@ echo <<< EOT
 						<option value="vaisseau de soutien">vaisseau de soutien</option>		
 					</select>
 				</p>
+				</p>
+                    <textarea name="description" rows="3" cols="60" required/>$d</textarea>
+                
+				<p>
                 <input type="hidden" name="action" value="$act" />
                 <input type="hidden" name="controller" value="vaisseau" />                
                 <p>

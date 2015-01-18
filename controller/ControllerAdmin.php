@@ -114,33 +114,33 @@ switch ($action) {
     break;
 		
 	case "updated":
-        if (is_null(myGet('pseudo') || is_null(myGet('prenom')) || is_null(myGet('nom')) 
-                || is_null(myGet('age')) || is_null(myGet('adr')) || is_null(myGet('pwd')) || is_null(myGet('pwd2')) || is_null(myGet('email')) || is_null(myGet('numtel')))) {
+        if (is_null($_POST['pseudo'] || is_null($_POST['prenom']) || is_null($_POST['nom']) 
+                || is_null($_POST['age']) || is_null($_POST['adr']) || is_null($_POST['pwd']) || is_null($_POST['email']) || is_null($_POST['numtel']))) {
             $view = "error";
             $pagetitle = "Erreur";
             break;
         }
-        if((myGet('mdp'))!=(myGet('mdp2'))){
-            $view = "error";
-            $pagetile ="Erreur";
-			$messageErreur="Les deux mots de passe ne sont pas identiques";
-            break;
-        }
-		
-        $data = array(
+        
+		$data = array(
             "pseudo" => $_SESSION['pseudoUtil'],
-            "nom" => myGet("nom"),
-            "prenom" => myGet("prenom"),
-            "email" => myGet("email"),
-			"adr" => myGet("adr"),
-			"age" => myGet("age"),
-			"numtel" => myGet("numtel"),
-            "pwd" => hash('sha256',myGet("pwd") . Conf::getSeed())
+            "nom" => $_POST["nom"],
+            "prenom" => $_POST["prenom"],
+            "email" => $_POST["email"],
+			"adr" => $_POST["adr"],
+			"age" => $_POST["age"],
+			"numtel" => $_POST["numtel"],
+            "pwd" => hash('sha256',$_POST["pwd"] . Conf::getSeed())
         );
+		if($_POST['admin']=="Oui"){
+         $data["admin"]=1;
+		}
+		elseif($_POST['admin']=="Non"){
+			$data["admin"]=0;
+		}
 		
         ModelUtilisateur::updateUtilAdmin($data);
         // Initialisation des variables pour la vue
-        $pseudo = myGet('pseudo');
+        $pseudo = $_POST['pseudo'];
         
         // Chargement de la vue
         $view = "updated";

@@ -27,5 +27,23 @@ function view1($u) {
 EOT;
 }
 ?>
+<div class="container">
+    <div class='tabs-x tabs-above tab-align-center'>
+      <ul id="onglets" class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#profil" role="tab" data-toggle="tab"><span class="fa fa-user"></span> Profil</a></li>
+        <li><a href="#historique" role="tab-kv" data-toggle="tab"><span class="fa fa-history"></span> Historique des commandes</a></li>
+      </ul>
+      <div id="contenu" class="tab-content">
+	          <div class="tab-pane fade in active" id="profil">
         <?php view1($u); ?>
+		</div>
+		<div class="tab-pane fade" id="historique">
+          <h3>Dernières commandes effectuées</h3>
+            <?php if (empty($tableauVue))  echo "<h4>Vous n'avez pas encore de commande d'enregistrer !</h4>";
+              else  echo $tableauVue;
+            ?>
+        </div>
+      </div>
+	 </div>
+</div>
         

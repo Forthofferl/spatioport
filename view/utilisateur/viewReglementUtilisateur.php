@@ -1,32 +1,14 @@
-<?php
-function view1($u) {
-    foreach ($u as $t) {
-      
-        $n = $t->nom;
-        $p = $t->prenom;
-        $adr = $t->adr;
-		
-		echo <<< EOT
-		
-        
-		<h3>Adresse de facturation et de livraison</h3>
-				<h4>$n</h4>
-				<h4>$p</h4>
-				<h4>$adr</h4>
-		
-EOT;
-    
-	}
-}
-?>
-        <!-- Une variable $tab_util est donnée -->    
+
+         
         <div>
-            <h3>Reglement de la commande:</h3></br>
-		<div class="col-md-12">
-            <table style="width: 50%">
+            <h3>Récapitulatif et reglement de la commande:</h3></br>
+		<div class="row">
+            <div class="col-lg-6">
+            <table class="table-responsive;" style="width: 100%">
 			<tr>
 				<td colspan="4">Votre commande</td>
-			</tr></br>
+			</tr>
+			
 			<tr>
 				<td>Libellé</td>
 				<td>Quantité</td>
@@ -49,19 +31,38 @@ EOT;
 			echo "Total : ".$montantTotal;
 			echo "</td></tr>"; ?>
             </table>
+			</div>
+			<div class="col-md-6">
+			<h4><b>Adresse de livraison et de facturation</b></h4>
+			<center>
+			<table class="table-responsive;">
 			
-			<div class="row">
-                <div class="col-md-12">
+			<tr>
 				
-			<?php view1($u);?>
-			</div>
-			</div>
-			</div>
+				<td>
+					<div class="col-md-6">
+					<h4><?php echo $n ?></h4>
+					</div>
+				</td>
+				
+				
+				<td>
+					<div class="col-md-6">
+					<h4><?php echo $p ?></h4>
+					</div>
+				</td>				
+			<tr>			
+			</table>
+			</center>
+					<h4><?php echo $adr ?></h4>
+			
+			
 			
 			
 			<a href="utilisateur.php?action=panier" class="btn btn-warning"><span class="fa fa-reply"></span> Revenir au panier</a> 
-			<a href="utilisateur.php?action=confirmation " class="btn btn-primary"><span ></span> Confirmer mon achat</a> 
-			
+			<a href="utilisateur.php?action=confirmation" class="btn btn-primary"><span ></span> Confirmer mon achat</a> 
+			</div>
+			</div>
 			
         </div>
 		

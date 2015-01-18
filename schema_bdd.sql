@@ -1,7 +1,7 @@
 ﻿DROP TABLE IF EXISTS Achat;
 DROP TABLE IF EXISTS Utilisateur;
 DROP TABLE IF EXISTS Vaisseau;
-DROP TABLE IF EXISTS Administrateur;
+DROP TABLE IF EXISTS Commande;
 
 CREATE TABLE Vaisseau
 (
@@ -24,7 +24,7 @@ CREATE TABLE Utilisateur
 	adr VARCHAR(255) NOT NULL,
 	pwd VARCHAR(255) NOT NULL,
 	email VARCHAR(255) NOT NULL,
-	numtel INT,
+	numtel INT(10),
 	nbrVaisseauAcheter INT NOT NULL,
 	admin BOOLEAN NOT NULL,
 	active VARCHAR(255) NOT NULL,
@@ -35,10 +35,19 @@ CREATE TABLE Achat
 (
 	idAchat INT NOT NULL AUTO_INCREMENT,
 	idAcheteur INT NOT NULL,
-	idVaisseau INT NOT NULL,
+	montantGlobale INT(32) NOT NULL,
+	date DATETIME NOT NULL,
 	PRIMARY KEY (idAchat)
 )ENGINE=INNODB;
 
+CREATE TABLE Commande
+(
+	idAchat INT NOT NULL,
+	idVaisseau INT NOT NULL,
+	montantUnitaire INT(32) NOT NULL,
+	qte INT NOT NULL,
+	PRIMARY KEY (idAchat,idVaisseau)
+)ENGINE=INNODB;
 
 
 INSERT INTO Vaisseau (idVaisseau,nomVaisseau, prixVaisseau, categorie, nbrEnStock, descripVaisseau) VALUES (NULL,"A-Wing", "250000", "chasseur", "100", "Le A-wing est le chasseur le plus rapide de 

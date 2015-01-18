@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-<li class="active" ><a href="utilisateur.php?action=create"><span class="fa fa-gamepad"></span> Accueil</a></li>
+<li><a href="utilisateur.php?action=accueil"><span class="fa fa-university"></span> Accueil</a></li>
 <li class="dropdown"> <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="fa fa-search"></span> Recherche par catégorie</a>
   
   <ul class="dropdown-menu">
@@ -25,12 +24,12 @@
     </form>
   </div>
 </li>
-<li class="active" ><a href="utilisateur.php?action=panier"><span class="fa fa-shopping-cart"></span> Panier (<?php 
+<li ><a href="utilisateur.php?action=panier"><span class="fa fa-shopping-cart"></span> Panier (<?php 
 	if (isset($_SESSION['panier'])) echo count($_SESSION['panier']['nomVaisseau']);
 	else echo 0; ?>)</a></li>
 
-<li class="active"><a href="utilisateur.php?action=profil"><span class="fa fa-user"></span> Profil</a></li>
-<li><a href="utilisateur.php?action=deconnexion"><span class="fa fa-toggle-off"></span> Se déconnecter (<?php echo $_SESSION['pseudo']; ?>)</a></li>
+<li><a href="utilisateur.php?action=profil"><span class="fa fa-user"></span> Profil</a></li>
+<li><a href="utilisateur.php?action=deconnexion"><span class="fa fa-toogle-on"></span> Se déconnecter (<?php echo $_SESSION['pseudo']; ?>)</a></li>
 
 
 <script type="text/javascript"> // évite que les input sortent du form s'ils sont trop grand

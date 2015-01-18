@@ -21,7 +21,7 @@ function view1($u) {
 			  <h3>Téléphone: $t</h3>
 			  <h3>Adresse: $adr</h3>
 			  <h3>Nombre d'achat: $nbr</h3>
-              
+			  
 	<p> <a href="administrateur.php?action=update" class="btn btn-primary"><span class="fa fa-refresh"></span> Mettre à jour le profil</a> </p>
     <p> <a href="administrateur.php?action=delete" class="btn btn-danger"><span class="fa fa-trash"></span> Supprimer le profil</a> </p>
 EOT;

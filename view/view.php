@@ -15,7 +15,7 @@
     </head>
 	<body>
         <!-- Menu -->
-        <div >
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -29,8 +29,6 @@
 								
 							if(estConnecte()){
 							
-								//$t = estAdmin();
-								//var_Dump($t);
 									if(estAdmin()){ 
 										include_once VIEW_PATH . 'menu' . DS . 'viewMenuAdmin.php';
 									}else{
@@ -73,7 +71,7 @@
 	<footer>
         <div id="footer">
             <div class="container">
-                <p class="credit">Spatioport <span class="fa fa-copyright"></span> 2015 -</p>
+                <p class="credit">Spatioport <span class="fa fa-copyright"></span> 2015 - <a href="mailto: loic.forthoffer@wanadoo.fr" target="_top"> Contact </a> </p>
             </div>
         </div>
 	</footer>

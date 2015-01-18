@@ -12,7 +12,7 @@ function view1($tab_vaisseau) {
 		<li> Le $v coute $p crédit gallactique et il y en a $n.
 			Description:
 			$d
-            <a href='vaisseau.php?action=read&id=$i'> Détails </a>
+            <a href='vaisseau.php?action=read&nomVaisseau=$v'> Détails </a>
         </li></br>
 		
     
