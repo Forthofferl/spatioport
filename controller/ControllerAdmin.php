@@ -128,9 +128,12 @@ switch ($action) {
             "email" => $_POST["email"],
 			"adr" => $_POST["adr"],
 			"age" => $_POST["age"],
-			"numtel" => $_POST["numtel"],
-            "pwd" => hash('sha256',$_POST["pwd"] . Conf::getSeed())
+			"numtel" => $_POST["numtel"]
+            
         );
+		if(!empty($_POST["pwd"])){
+                  $data['pwd']=hash('sha256',$_POST["pwd"].Conf::getSeed());
+                }
 		if($_POST['admin']=="Oui"){
          $data["admin"]=1;
 		}

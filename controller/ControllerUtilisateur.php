@@ -343,7 +343,7 @@ switch ($action) {
         $p = "";
 		$a = "";
 		$adr = "";
-		$n = "";
+		$t = "";
         $e = "";
         $m1="";
         $m2="";
@@ -447,10 +447,6 @@ switch ($action) {
 			$messageErreur="Vous devez être connecté pour accéder à cette partie du site!";
             
 		}
-	break;
-	case "accueil":
-		$view="accueil";
-		$pagetitle="Accueil";
 	break;
 			
 	

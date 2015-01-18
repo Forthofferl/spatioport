@@ -65,8 +65,8 @@ switch ($action) {
     break;
 		
 	case "updated":
-        if (!(is_null(myGet('nomVaisseau')) || is_null(myGet('prixVaisseau')) || is_null(myGet('nbrEnStock')) || is_null(myGet('categorie')) 
-                || is_null(myGet('descripVaisseau')))) {
+        if (!(is_null($_POST['nomVaisseau']) || is_null($_POST['prixVaisseau']) || is_null($_POST['nbrEnStock']) || is_null($_POST['categorie']) 
+                || is_null($_POST['descripVaisseau']))) {
 			$view = "error";
             $pagetitle = "Erreur";
             break;
@@ -74,18 +74,18 @@ switch ($action) {
         
 		if(estConnecte()&&estAdmin()){
         $data = array(
-            "nomVaisseau" => myGet("nomVaisseau"),
-            "prixVaisseau" => myGet("prix"),
-			"categorie" => myGet("categorie"),
-            "nbrEnStock" => myGet("nbrStock"),
-            "descripVaisseau" => myGet("description")
+            "nomVaisseau" => $_POST["nomVaisseau"],
+            "prixVaisseau" => $_POST["prix"],
+			"categorie" => $_POST["categorie"],
+            "nbrEnStock" => $_POST["nbrStock"],
+            "descripVaisseau" => $_POST["description"]
 			
         );
 		
 		$_SESSION['categorie']=$_POST['categorie'];
         ModelVaisseau::updateVaisAdmin($data);
         // Initialisation des variables pour la vue
-        $nom = myGet('nomVaisseau');
+        $nom = $_POST['nomVaisseau'];
         
         // Chargement de la vue
         $view = "updated";
@@ -133,22 +133,21 @@ switch ($action) {
         break;
 
     case "save":
-        if (!(is_null(myGet('nomVaisseau')) || is_null(myGet('prixVaisseau')) || is_null(myGet('nbrEnStock')) || is_null(myGet('categorie')) 
-                || is_null(myGet('descripVaisseau')))) {
+        if (!(is_null($_POST['nomVaisseau']) || is_null($_POST['prix']) || is_null($_POST['nbrStock']) || is_null($_POST['categorie']) 
+                || is_null($_POST['description']))) {
             $view = "error";
             $pagetitle = "Erreur";
 			$messageErreur = "L'un des champs est null";
             break;
         }
         $data = array(
-            "nomVaisseau" => myGet("nomVaisseau"),
-            "prixVaisseau" => myGet("prix"),
-			"categorie" => myGet("categorie"),
-            "nbrEnStock" => myGet("nbrStock"),
-            "descripVaisseau" => myGet("description")
+            "nomVaisseau" => $_POST["nomVaisseau"],
+            "prixVaisseau" => $_POST["prix"],
+			"categorie" => $_POST["categorie"],
+            "nbrEnStock" => $_POST["nbrStock"],
+            "descripVaisseau" => $_POST["description"]
 			
         );
-		var_dump($data);
         ModelVaisseau::insert($data);
         // Initialisation des variables pour la vue
         $nom=$data['nomVaisseau'];
@@ -244,7 +243,7 @@ switch ($action) {
 		$_SESSION['nomVaisseau']=$_POST['nomVaisseau'];
         $u = ModelVaisseau::selectWhere($data);
 		
-		$_SESSION['idVais']=$u[0]->idVaisseau;
+		
 		
 		
         // Chargement de la vue
@@ -254,6 +253,7 @@ switch ($action) {
 			$messageErreur="Il n'existe aucun vaisseau de ce nom";
         } else {
 			if(estConnecte()&&estAdmin()){
+			$_SESSION['idVais']=$u[0]->idVaisseau;
             $view = "searchedA";
             $pagetitle = "Détail d'un vaisseau";
 			

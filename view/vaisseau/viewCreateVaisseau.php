@@ -1,27 +1,15 @@
-<?php
-echo <<< EOT
-        <form method="post" action="." onsubmit="check()">
-            <fieldset>
-                <legend>$label un vaisseau</legend>
-                
-                <p>
-                    <label for="id_nomVaisseau">Nom du Vaisseau</label> :
-                    <input type="text" value="$v" name="nomVaisseau" id="id_nomVaisseau" required/>
-                </p>
-                <p>
-                    <label for="id_prixVaisseau">Prix</label> :
-                    <input type="text" value="$p" name="prix" id="id_prix" required/>
-                </p>
-                <p>
-                    <label for="id_nbStock">Nombre en stock</label> :
-                    <input type="text" value="$n" name="nbrStock" id="id_nbStock" required/>
-                </p>
-				 <p>
-					<b>
-                    Description:
-					</b>
-				
-					<label for="id_categorie">Catégorie</label> :
+
+
+
+<h2 id="mainhead"><span class="fa fa-rocket"></span> Ajouter un vaisseau</h2>
+<hr>
+<div class="row">
+<div class="col-md-offset-3 col-md-6">
+<form method="post" action="vaisseau.php?action=save" onsubmit="check()">
+        <div class="input-group"><span class="input-group-addon"></span><input type="text" type="text" class="form-control" value="<?php echo $v?>" placeholder="Nom du vaisseau" name="nomVaisseau" id="id_nomVaisseau" required/></div><br/>
+        <div class="input-group"><span class="input-group-addon"></span><input type="text" class="form-control" value="<?php echo $p ?>" name="prix" placeholder="Prix du vaisseau" id="id_prix" required/></div><br/>
+		<div class="input-group"><span class="input-group-addon"></span><input type="text" class="form-control" value="<?php echo $n ?>" placeholder="Nombre en stock" name="nbrStock" id="id_nbStock" required/></div><br/>
+        
 					<select name="categorie" id="categorie">
 						<option selected="selected" value="selection de categorie">selectionnez une catégorie</option>
 						<option value="chasseur">chasseur</option>
@@ -34,21 +22,12 @@ echo <<< EOT
 						<option value="porte-vaisseau">porte-vaisseaux</option>
 						<option value="vaisseau mère">vaisseau mère</option>
 						<option value="vaisseau de soutien">vaisseau de soutien</option>		
-					</select>
-				</p>
-				</p>
-                    <textarea name="description" rows="3" cols="60" required/>$d</textarea>
-                
-				<p>
-                <input type="hidden" name="action" value="$act" />
-                <input type="hidden" name="controller" value="vaisseau" />                
-                <p>
-                    <input type="submit" value="$submit" />
-                </p>
-            </fieldset>
-        </form>
-EOT;
-?>   
+					</select><br/>
+        <div class="input-group"><textarea name="description" placeholder="Description" rows="5" cols="67" required/><?php echo $d ?></textarea></div><br/>
+		<input type="submit" class="btn btn-default" value="&#xf021; Ajouter le vaisseau" />
+</form>
+</div>
+</div>  
 <script type="text/javascript">
 function check() {
     var option = document.getElementById('categorie') ;

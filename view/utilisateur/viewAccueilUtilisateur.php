@@ -12,5 +12,5 @@
 	
 	<div class="jumbotron">
 	<h3>Maintenant en vente, le vaisseau mythique du Capitaine Kirk!</h3>
-	<a href="vaisseau.php?action=find&nomVaisseau=Enterprise"><img src="<?php echo VIEW_PATH_BASE.'img/Enterprise.jpg'?>" title="Enterprise" width="400" height="300">
+	<a href="vaisseau.php?action=find&nomVaisseau=Enterprise NCC-1701"><img src="<?php echo VIEW_PATH_BASE.'img/Enterprise.jpg'?>" title="Enterprise" width="400" height="300">
 	</div>
